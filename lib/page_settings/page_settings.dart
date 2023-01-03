@@ -10,6 +10,8 @@ class PageSettings extends StatelessWidget {
         title: const Text(
           "Settings",
         ),
+        elevation: 0,
+        backgroundColor: const Color(0xFF006699),
       ),
       body: Container(
         margin: const EdgeInsets.all(16.0),
