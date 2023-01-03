@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:aspis/page_manual_entry/page_manual_entry.dart';
+
 class FabButton extends StatelessWidget {
   const FabButton({super.key});
 
@@ -24,12 +26,26 @@ class FabButton extends StatelessWidget {
                   children: <Widget>[
                     const Text('Modal BottomSheet'),
                     ElevatedButton(
-                      child: const Text('Enter Manually'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
+                        child: const Text('Enter Manually'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (BuildContext context, Animation<double> animation1,
+                                  Animation<double> animation2) {
+                                return const PageManualEntry();
+                              },
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero,
+                            ),
+                          );
+                        }),
                     ElevatedButton(
                       child: const Text('Scan QR Code (TODO) - mobile only'),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     ElevatedButton(
                       child: const Text('Close BottomSheet'),
