@@ -5,6 +5,8 @@ import 'package:aspis/page_main/fab_button.dart';
 import 'package:aspis/page_settings/page_settings.dart';
 import 'package:aspis/page_about/page_about.dart';
 
+import 'package:aspis/page_main/test_realm.dart';
+
 class PageMain extends StatefulWidget {
   const PageMain({super.key});
 
@@ -80,6 +82,9 @@ class _PageMainState extends State<PageMain> {
               Text(
                 'You have pushed the button this many times:',
               ),
+
+              //
+              TestRealm(),
             ],
           ),
         ),
