@@ -9,6 +9,7 @@ class FlatDropdown extends StatefulWidget {
     required this.value,
     required this.onValueChanged,
     required this.items,
+    this.labelText = "",
   });
 
   final String value;
@@ -16,6 +17,8 @@ class FlatDropdown extends StatefulWidget {
 
   // TODO(clearfeld): allow for enums later
   final List<String> items;
+
+  final String? labelText;
 
   @override
   State<FlatDropdown> createState() => _FlatDropdown();
@@ -44,29 +47,42 @@ class _FlatDropdown extends State<FlatDropdown> {
           ),
       child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16),
-        child: DropdownButton(
-          value: widget.value,
-          icon: const Icon(Icons.arrow_downward),
-          onChanged: (String? valueArg) {
-            widget.onValueChanged(valueArg);
-          },
-          items: widget.items.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-
-          // iconEnabledColor: customColors.text_color, //Icon color
-          style: TextStyle(
-            // color: customColors.text_color, //Font color
-            fontSize: 16, //font size on dropdown button
+        child: InputDecorator(
+          decoration: InputDecoration(
+            labelText: widget.labelText,
+            labelStyle: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+              height: 3,
+            ),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: -5),
           ),
+          child: DropdownButton(
+            value: widget.value,
+            icon: const Icon(Icons.arrow_downward),
+            onChanged: (String? valueArg) {
+              widget.onValueChanged(valueArg);
+            },
+            items: widget.items.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
 
-          dropdownColor: Colors.redAccent, //dropdown background color
-          underline: Container(), //remove underline
-          isExpanded: true, //make true to make width 100%
-        ),
+            // iconEnabledColor: customColors.text_color, //Icon color
+            style: const TextStyle(
+              // color: customColors.text_color, //Font color
+              color: Colors.black,
+              fontSize: 16, //font size on dropdown button
+            ),
+
+            dropdownColor: Colors.blueAccent, //dropdown background color
+            underline: Container(), //remove underline
+            isExpanded: true, //make true to make width 100%
+          ),
+        )
       ),
     );
   }
