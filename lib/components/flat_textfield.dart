@@ -32,8 +32,11 @@ class _FlatTextField extends State<FlatTextField> {
 
     return TextField(
       controller: widget.textController,
-      style: TextStyle(color: textColor), // customColors.text_color),
       enabled: widget.enabled,
+      obscureText: widget.password,
+      enableSuggestions: !widget.password,
+      autocorrect: !widget.password,
+      style: TextStyle(color: Colors.white), // customColors.text_color),
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color.fromRGBO(41, 41, 41, 1.0), // customColors.background,
