@@ -39,6 +39,7 @@ dependencies:
   realm: ^0.11.0+rc
   crypto: ^3.0.2
   encrypt: ^5.0.1
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
