@@ -29,9 +29,14 @@ class _TestRealmState extends State<TestRealm> {
   }
 
   void readTestDataToRealm() {
-    final people = gRealm.all<Person>();
-    for (var i = 0; i < people.length; ++i) {
-      print(people[i].name);
+    // final people = gRealm.all<Person>();
+    // for (var i = 0; i < people.length; ++i) {
+    //   print(people[i].name);
+    // }
+
+    final otp = gRealm.all<OTP>();
+    for (var i = 0; i < otp.length; ++i) {
+      print(otp[i].title);
     }
   }
 

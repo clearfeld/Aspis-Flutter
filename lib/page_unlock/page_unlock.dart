@@ -59,7 +59,7 @@ class _PageUnlockState extends State<PageUnlock> {
     print(storagePath);
 
     try {
-      final encryptedConfig = Configuration.local([Person.schema], encryptionKey: x);
+      final encryptedConfig = Configuration.local([Person.schema, OTP.schema], encryptionKey: x);
       gRealm = Realm(encryptedConfig);
       passwordTextController.text = "";
       setState(

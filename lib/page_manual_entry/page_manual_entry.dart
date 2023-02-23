@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:aspis/global_realm.dart';
+import 'package:realm/realm.dart';
+import 'package:aspis/store/test.dart';
 import 'package:aspis/components/flat_textfield.dart';
 
-import '../components/flat_dropdown.dart';
+import 'package:aspis/components/flat_dropdown.dart';
 import 'package:expandable/expandable.dart';
-// import 'package:aspis/components/flat_dropdown.dart';
 
 class PageManualEntry extends StatefulWidget {
   const PageManualEntry({super.key});
@@ -28,8 +30,8 @@ class _PageManualEntryState extends State<PageManualEntry> {
   final usageTextController = TextEditingController();
 
   String groupValue = "";
-  String typeValue = "";
-  String hashValue = "";
+  String typeValue = "TOTP";
+  String hashValue = "SHA1";
 
   @override
   void initState() {
@@ -74,6 +76,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
       print("1" * 100);
     }
   }
+
   void _save_entry() {
     print(titleTextController.text);
     print(secretTextController.text);
@@ -83,6 +86,23 @@ class _PageManualEntryState extends State<PageManualEntry> {
     print(digitsTextController.text);
     print(usageTextController.text);
     print(groupValue);
+
+    gRealm.write(() {
+      gRealm.addAll([
+        OTP(
+            ObjectId(),
+            titleTextController.text,
+            secretTextController.text,
+            issuer: issuerTextController.text,
+            group: groupValue,
+            notes: notesTextController.text,
+            typeValue,
+            hashValue,
+            int.parse(periodTextController.text),
+            int.parse(digitsTextController.text),
+            int.parse(usageTextController.text))
+      ]);
+    });
   }
 
   @override
@@ -191,7 +211,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                                   groupValue = valueArg!;
                                 });
                               },
-                              items: ["No Group","fdsa","qwer"],
+                              items: ["No Group", "fdsa", "qwer"],
                             )
                           ],
                         ),
@@ -221,105 +241,104 @@ class _PageManualEntryState extends State<PageManualEntry> {
                   ExpandablePanel(
                     header: Padding(
                       padding: EdgeInsets.only(left: 24.0, top: 10),
-                      child: Text("Advanced",
-                              textAlign: TextAlign.left,
-                            ),
+                      child: Text(
+                        "Advanced",
+                        textAlign: TextAlign.left,
+                      ),
                     ),
                     collapsed: Column(children: []),
-                    expanded: Column(
-                      children: [
-                        Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.info,
-                              color: Colors.black,
+                    expanded: Column(children: [
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.info,
+                            color: Colors.black,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FlatDropdown(
+                                  value: typeValue,
+                                  labelText: "Type",
+                                  onValueChanged: (String? valueArg) {
+                                    setState(() {
+                                      typeValue = valueArg!;
+                                    });
+                                  },
+                                  items: ["TOTP", "HOTP", "Stream", "Yandex", "MOTP"],
+                                )
+                              ],
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  FlatDropdown(
-                                    value: typeValue,
-                                    labelText: "Type",
-                                    onValueChanged: (String? valueArg) {
-                                      setState(() {
-                                        typeValue = valueArg!;
-                                      });
-                                    },
-                                    items: ["TOTP","HOTP","Stream","Yandex","MOTP"],
-                                  )
-                                ],
-                              ),
+                          ),
+                          const SizedBox(
+                            width: 16.0,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FlatDropdown(
+                                  value: hashValue,
+                                  labelText: "Hash Function",
+                                  onValueChanged: (String? valueArg) {
+                                    setState(() {
+                                      hashValue = valueArg!;
+                                    });
+                                  },
+                                  items: ["SHA1", "SHA256", "SHA512"],
+                                )
+                              ],
                             ),
-                            const SizedBox(
-                              width: 16.0,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          const SizedBox(
+                            width: 24.0,
+                          ),
+                          Expanded(
+                            child: FlatTextField(
+                              textController: periodTextController,
+                              labelText: "Period (Seconds)",
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  FlatDropdown(
-                                    value: hashValue,
-                                    labelText: "Hash Function",
-                                    onValueChanged: (String? valueArg) {
-                                      setState(() {
-                                        hashValue = valueArg!;
-                                      });
-                                    },
-                                    items: ["SHA1","SHA256","SHA512"],
-                                  )
-                                ],
-                              ),
+                          ),
+                          const SizedBox(
+                            width: 16.0,
+                          ),
+                          Expanded(
+                            child: FlatTextField(
+                              textController: digitsTextController,
+                              labelText: "Digits",
                             ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            const SizedBox(
-                              width: 24.0,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 24.0,
+                          ),
+                          Expanded(
+                            child: FlatTextField(
+                              textController: usageTextController,
+                              labelText: "Usage Count",
+                              enabled: false,
                             ),
-                            Expanded(
-                              child: FlatTextField(
-                                textController: periodTextController,
-                                labelText: "Period (Seconds)",
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16.0,
-                            ),
-                            Expanded(
-                              child: FlatTextField(
-                                textController: digitsTextController,
-                                labelText: "Digits",
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 24.0,
-                            ),
-                            Expanded(
-                              child: FlatTextField(
-                                textController: usageTextController,
-                                labelText: "Usage Count",
-                                enabled: false,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                      ]
-                    ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                    ]),
                   ),
                 ],
               ),
