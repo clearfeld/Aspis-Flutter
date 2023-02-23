@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aspis/global_realm.dart';
 import 'package:aspis/components/flat_textfield.dart';
 import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,6 @@ class _PageUnlockState extends State<PageUnlock> {
   final passwordTextController = TextEditingController();
 
   String errorMsg = "";
-
-  // TODO: move to global state
-  late Realm realm;
 
   @override
   void dispose() {
@@ -55,9 +53,14 @@ class _PageUnlockState extends State<PageUnlock> {
 
     print(x);
 
+    // Get on-disk location of the default Realm
+    final storagePath = Configuration.defaultStoragePath;
+    // See value in your application
+    print(storagePath);
+
     try {
       final encryptedConfig = Configuration.local([Person.schema], encryptionKey: x);
-      realm = Realm(encryptedConfig);
+      gRealm = Realm(encryptedConfig);
       passwordTextController.text = "";
       setState(
         () => errorMsg = "",
