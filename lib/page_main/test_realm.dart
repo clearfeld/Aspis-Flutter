@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:otp/otp.dart' as LOTP;
+import 'package:base32/base32.dart';
 import 'package:aspis/global_realm.dart';
 import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +32,30 @@ class _TestRealmState extends State<TestRealm> {
   }
 
   void readTestDataToRealm() {
-    // final people = gRealm.all<Person>();
-    // for (var i = 0; i < people.length; ++i) {
-    //   print(people[i].name);
-    // }
+    final people = gRealm.all<Person>();
+    for (var i = 0; i < people.length; ++i) {
+      print(people[i].name);
+    }
 
     final otp = gRealm.all<OTP>();
     for (var i = 0; i < otp.length; ++i) {
       print(otp[i].title);
+      // GenerateOTPCode(otp[i]);
     }
+  }
+
+// For testing purposes
+  void GenerateOTPCode(otp) {
+    print(otp);
+    // if (otp.title != "NP") {
+    //   return;
+    // }
+
+    print(otp.secret);
+
+    final code = LOTP.OTP.generateTOTPCodeString(otp.secret, DateTime.now().millisecondsSinceEpoch,
+        length: 6, interval: 30, algorithm: LOTP.Algorithm.SHA1, isGoogle: true);
+    print(code);
   }
 
   @override
