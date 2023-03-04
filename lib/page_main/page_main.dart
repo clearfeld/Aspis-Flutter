@@ -79,11 +79,6 @@ class _PageMainState extends State<PageMain> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const <Widget>[
-              Text(
-                'You have pushed the button this many times:',
-              ),
-
-              //
               TestRealm(),
             ],
           ),

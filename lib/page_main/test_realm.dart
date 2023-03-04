@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as pe;
 
+import 'package:aspis/page_main/otp_code_block/otp_code_block.dart';
 import 'package:aspis/components/flat_textfield.dart';
 import 'package:realm/realm.dart';
 
@@ -20,6 +21,17 @@ class TestRealm extends StatefulWidget {
 
 class _TestRealmState extends State<TestRealm> {
   final passwordTextController = TextEditingController();
+
+  RealmResults<OTP>? OTPCodes;
+
+  @override
+  void initState() {
+    super.initState();
+
+    OTPCodes = gRealm.all<OTP>();
+
+    print(OTPCodes);
+  }
 
   void addTestDataToRealm() {
     gRealm.write(() {
@@ -67,16 +79,8 @@ class _TestRealmState extends State<TestRealm> {
           const SizedBox(
             height: 16,
           ),
-
-          //
-          FlatTextField(
-            textController: passwordTextController,
-            hintText: "Password",
-            password: true,
-          ),
-
+          for (var otpcode in OTPCodes!) OTPCodeBlock(otpcode: otpcode),
           TextButton(onPressed: () => {addTestDataToRealm()}, child: const Text("Test Data")),
-
           TextButton(onPressed: () => {readTestDataToRealm()}, child: const Text("Read Data"))
         ],
       ),
