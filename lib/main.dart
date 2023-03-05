@@ -1,3 +1,4 @@
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,9 +36,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      //   theme: ThemeData(
+      //     useMaterial3: true,
+      //   ),
+      theme: custLightTheme,
+      darkTheme: custDarkTheme,
+      themeMode: ThemeMode.system,
       //   theme: ThemeData(
       //     primarySwatch: Colors.blue,
       //   ),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:aspis/store/test.dart';
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:otp/otp.dart' as LOTP;
@@ -15,8 +16,9 @@ class OTPCodeBlock extends StatefulWidget {
   State<OTPCodeBlock> createState() => _OTPCodeBlockState();
 }
 
-class _OTPCodeBlockState extends State<OTPCodeBlock> {
+class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMixin {
   String? OTPCode;
+  AnimationController? controller;
 
   @override
   void initState() {
@@ -24,7 +26,10 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> {
 
     GenerateOTPCode(widget.otpcode);
     // OTPCodes = gRealm.all<OTP>();
-
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 5),
+    );
     // print(OTPCodes);
   }
 
@@ -45,46 +50,59 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+
     return GestureDetector(
       onTap: () async {
         if (OTPCode != null) {
           await Clipboard.setData(ClipboardData(text: OTPCode));
         }
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: 112.0,
-                height: 112.0,
-                padding: const EdgeInsets.all(30.0),
-                child: SvgPicture.asset("assets/aegis_icons/icons/1_Primary/Allegro.svg",
-                    semanticsLabel: 'Acme Logo'),
-              ),
-              Column(
-                children: <Widget>[
-                  Row(
+      child: Container(
+        color: customColors!.background,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 88.0,
+                  height: 88.0,
+                  padding: const EdgeInsets.all(16.0),
+                  child: SvgPicture.asset("assets/aegis_icons/icons/1_Primary/Allegro.svg",
+                      semanticsLabel: 'Acme Logo'),
+                ),
+                Expanded(
+                  child: Column(
                     children: <Widget>[
-                      Text(widget.otpcode.title),
-                      const Text("  "),
-                      Text(widget.otpcode.issuer ?? ""),
+                      Row(
+                        children: <Widget>[
+                          Text(widget.otpcode.issuer ?? ""),
+                          if (widget.otpcode.issuer != null) ...[
+                            const Text("  "),
+                          ],
+                          Text(widget.otpcode.title),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            OTPCode ?? "",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 4.0,
-                  ),
-                  Text(
-                    OTPCode ?? "",
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                ],
-              ),
-              Text("Counter"),
-            ],
-          ),
-        ],
+                ),
+                Text("Counter"),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
