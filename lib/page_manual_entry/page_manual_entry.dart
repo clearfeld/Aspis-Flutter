@@ -7,6 +7,7 @@ import 'package:aspis/components/flat_textfield.dart';
 
 import 'package:aspis/components/flat_dropdown.dart';
 import 'package:expandable/expandable.dart';
+import 'package:aspis/singleton_otp_entry.dart';
 
 class PageManualEntry extends StatefulWidget {
   const PageManualEntry({super.key});
@@ -36,15 +37,28 @@ class _PageManualEntryState extends State<PageManualEntry> {
   @override
   void initState() {
     super.initState();
-    titleTextController.text = "";
-    secretTextController.text = "";
-    issuerTextController.text = "";
-    periodTextController.text = "30";
-    digitsTextController.text = "6";
-    usageTextController.text = "0";
-    groupValue = "No Group";
-    typeValue = "TOTP";
-    hashValue = "SHA1";
+    if (newOtp.secret != "") {
+      titleTextController.text = newOtp.name;
+      secretTextController.text = newOtp.secret;
+      issuerTextController.text = newOtp.issuer;
+      periodTextController.text = newOtp.period;
+      digitsTextController.text = newOtp.digits.toString();
+      usageTextController.text = newOtp.counter;
+      groupValue = "No Group";
+      typeValue = newOtp.type.toUpperCase();
+      hashValue = newOtp.algorithm;
+    }
+    else {
+      titleTextController.text = "";
+      secretTextController.text = "";
+      issuerTextController.text = "";
+      periodTextController.text = "30";
+      digitsTextController.text = "6";
+      usageTextController.text = "0";
+      groupValue = "No Group";
+      typeValue = "TOTP";
+      hashValue = "SHA1";
+    }
   }
 
   @override
@@ -73,20 +87,10 @@ class _PageManualEntryState extends State<PageManualEntry> {
       //  ),
       //);
     } else if (item == 1) {
-      print("1" * 100);
     }
   }
 
   void _save_entry() {
-    print(titleTextController.text);
-    print(secretTextController.text);
-    print(issuerTextController.text);
-    print(notesTextController.text);
-    print(periodTextController.text);
-    print(digitsTextController.text);
-    print(usageTextController.text);
-    print(groupValue);
-
     gRealm.write(() {
       gRealm.addAll([
         OTP(
@@ -173,6 +177,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                         child: FlatTextField(
                           textController: secretTextController,
                           labelText: "Secret",
+                          password: true,
                         ),
                       ),
                     ],
