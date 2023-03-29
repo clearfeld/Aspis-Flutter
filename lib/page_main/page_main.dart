@@ -19,6 +19,29 @@ class PageMain extends StatefulWidget {
 }
 
 class _PageMainState extends State<PageMain> {
+  final searchTextController = TextEditingController();
+  RealmResults<OTP>? otpCodes = gRealm.all<OTP>();
+  bool search = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchTextController.dispose();
+  }
+
+  List<OTP> filteredCodes() {
+    List<OTP> filteredList = [];
+    if (otpCodes != null) {
+      var searchText = searchTextController.text.toLowerCase();
+      for (var otpCode in otpCodes!) {
+        if (otpCode.title.toLowerCase().contains(searchText) || otpCode.issuer!.toLowerCase().contains(searchText) || searchText == '') {
+          filteredList.add(otpCode);
+        }
+      }
+    }
+    return filteredList;
+  }
+
   void _moreOptionSelected(int item) {
     if (item == 0) {
       Navigator.push(
@@ -49,6 +72,72 @@ class _PageMainState extends State<PageMain> {
 
   @override
   Widget build(BuildContext context) {
+    if (search) {
+      return WillPopScope(
+        onWillPop: () async {
+          searchTextController.text = '';
+          setState(() {search = false;});
+          return false;
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: const Color(0xFF006699),
+              // The search area here
+              title: Container(
+                width: double.infinity,
+                height: 40,
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
+                child: Center(
+                  child: TextField(
+                    controller: searchTextController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          /* Clear the search field */
+                          setState(() {
+                            searchTextController.text = '';
+                          });
+                        },
+                      ),
+                      hintText: 'Search...',
+                      border: InputBorder.none
+                    ),
+                    onChanged: (value) => { setState(() {}) },
+                  ),
+                ),
+              )
+            ),
+            body: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          for (var otpcode in filteredCodes()) ...[
+                            OTPCodeBlock(otpcode: otpcode),
+                            const SizedBox(
+                              height: 4.0,
+                            ),
+                          ],
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            floatingActionButton: const FabButton(),
+        )
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Aspis"),
@@ -56,12 +145,7 @@ class _PageMainState extends State<PageMain> {
         backgroundColor: const Color(0xFF006699),
         actions: [
           IconButton(
-            onPressed: () => Navigator.push(context, PageRouteBuilder(
-              pageBuilder:
-                  (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
-                return const SearchPage();
-              },
-            )),
+            onPressed: () => {setState(() {search = true;})},
             icon: const Icon(Icons.search)
           ),
           PopupMenuButton(
@@ -93,98 +177,6 @@ class _PageMainState extends State<PageMain> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TestRealm(),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: const FabButton(),
-    );
-  }
-}
-
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _SearchPage();
-}
-
-class _SearchPage extends State<SearchPage> {
-  final searchTextController = TextEditingController();
-  RealmResults<OTP>? OTPCodes = gRealm.all<OTP>();
-
-  @override
-  void dispose() {
-    super.dispose();
-    searchTextController.dispose();
-  }
-
-  List<OTP> filteredCodes() {
-    List<OTP> filteredList = [];
-    if (OTPCodes != null) {
-      for (var otpCode in OTPCodes!) {
-        if (otpCode.title.contains(searchTextController.text) || otpCode.issuer!.contains(searchTextController.text) || searchTextController.text == '') {
-          filteredList.add(otpCode);
-        }
-      }
-    }
-    return filteredList;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF006699),
-        // The search area here
-        title: Container(
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Center(
-              child: TextField(
-                controller: searchTextController,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      /* Clear the search field */
-                      setState(() {
-                        searchTextController.text = '';
-                      });
-                    },
-                  ),
-                  hintText: 'Search...',
-                  border: InputBorder.none
-                ),
-                onChanged: (value) => { setState(() {}) },
-              ),
-          ),
-        )
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    for (var otpcode in filteredCodes()) ...[
-                      OTPCodeBlock(otpcode: otpcode),
-                      const SizedBox(
-                        height: 4.0,
-                      ),
-                    ],
-                  ],
-                ),
-              )
             ],
           ),
         ),
