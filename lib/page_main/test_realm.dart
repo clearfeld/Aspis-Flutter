@@ -13,7 +13,9 @@ import 'package:aspis/components/flat_textfield.dart';
 import 'package:realm/realm.dart';
 
 class TestRealm extends StatefulWidget {
-  const TestRealm({super.key});
+  TestRealm({super.key, required this.searchString});
+
+  late String searchString = "";
 
   @override
   State<TestRealm> createState() => _TestRealmState();
@@ -33,6 +35,21 @@ class _TestRealmState extends State<TestRealm> {
     print(OTPCodes);
   }
 
+  List<OTP> filteredCodes() {
+    List<OTP> filteredList = [];
+    if (OTPCodes != null) {
+      var searchText = widget.searchString.toLowerCase();
+      for (var otpCode in OTPCodes!) {
+        if (otpCode.title.toLowerCase().contains(searchText) ||
+            otpCode.issuer!.toLowerCase().contains(searchText) ||
+            searchText == '') {
+          filteredList.add(otpCode);
+        }
+      }
+    }
+    return filteredList;
+  }
+
   void addTestDataToRealm() {
     gRealm.write(() {
       gRealm.addAll([
@@ -46,32 +63,36 @@ class _TestRealmState extends State<TestRealm> {
   void readTestDataToRealm() {
     final people = gRealm.all<Person>();
     for (var i = 0; i < people.length; ++i) {
-      print(people[i].name);
+      debugPrint(people[i].name);
     }
 
     final otp = gRealm.all<OTP>();
     for (var i = 0; i < otp.length; ++i) {
-      print(otp[i].title);
+      debugPrint(otp[i].title);
       // GenerateOTPCode(otp[i]);
     }
   }
 
 // For testing purposes
   void GenerateOTPCode(otp) {
-    print(otp);
+    debugPrint(otp);
     // if (otp.title != "NP") {
     //   return;
     // }
 
-    print(otp.secret);
+    debugPrint(otp.secret);
 
     final code = LOTP.OTP.generateTOTPCodeString(otp.secret, DateTime.now().millisecondsSinceEpoch,
         length: 6, interval: 30, algorithm: LOTP.Algorithm.SHA1, isGoogle: true);
-    print(code);
+    debugPrint(code);
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(filteredCodes().toString());
+    debugPrint(OTPCodes!.toString());
+    debugPrint(widget.searchString);
+
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 16, 0, 16),
       child: Column(
@@ -81,7 +102,7 @@ class _TestRealmState extends State<TestRealm> {
               const SizedBox(
                 height: 16,
               ),
-              for (var otpcode in OTPCodes!) ...[
+              for (var otpcode in filteredCodes()) ...[
                 OTPCodeBlock(otpcode: otpcode),
                 SizedBox(
                   height: 4.0,

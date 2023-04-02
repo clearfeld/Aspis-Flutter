@@ -1,5 +1,3 @@
-import 'package:aspis/global_realm.dart';
-import 'package:aspis/page_main/otp_code_block/otp_code_block.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aspis/page_main/fab_button.dart';
@@ -8,8 +6,6 @@ import 'package:aspis/page_settings/page_settings.dart';
 import 'package:aspis/page_about/page_about.dart';
 
 import 'package:aspis/page_main/test_realm.dart';
-import 'package:realm/realm.dart';
-import 'package:aspis/store/test.dart';
 
 class PageMain extends StatefulWidget {
   const PageMain({super.key});
@@ -20,28 +16,12 @@ class PageMain extends StatefulWidget {
 
 class _PageMainState extends State<PageMain> {
   final searchTextController = TextEditingController();
-  RealmResults<OTP>? otpCodes = gRealm.all<OTP>();
   bool search = false;
 
   @override
   void dispose() {
     super.dispose();
     searchTextController.dispose();
-  }
-
-  List<OTP> filteredCodes() {
-    List<OTP> filteredList = [];
-    if (otpCodes != null) {
-      var searchText = searchTextController.text.toLowerCase();
-      for (var otpCode in otpCodes!) {
-        if (otpCode.title.toLowerCase().contains(searchText) ||
-            otpCode.issuer!.toLowerCase().contains(searchText) ||
-            searchText == '') {
-          filteredList.add(otpCode);
-        }
-      }
-    }
-    return filteredList;
   }
 
   void _moreOptionSelected(int item) {
@@ -74,74 +54,45 @@ class _PageMainState extends State<PageMain> {
 
   @override
   Widget build(BuildContext context) {
+    var vappBar;
     if (search) {
-      return WillPopScope(
-          onWillPop: () async {
-            searchTextController.text = '';
-            setState(() {
-              search = false;
-            });
-            return false;
-          },
-          child: Scaffold(
-            appBar: AppBar(
-                backgroundColor: const Color(0xFF006699),
-                // The search area here
-                title: Container(
-                  width: double.infinity,
-                  height: 40,
-                  decoration:
-                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
-                  child: Center(
-                    child: TextField(
-                      controller: searchTextController,
-                      decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.search),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              /* Clear the search field */
-                              setState(() {
-                                searchTextController.text = '';
-                              });
-                            },
-                          ),
-                          hintText: 'Search...',
-                          border: InputBorder.none),
-                      onChanged: (value) => {setState(() {})},
+      vappBar = AppBar(
+          backgroundColor: const Color(0xFF006699),
+          // The search area here
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    controller: searchTextController,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Search...',
+                        border: InputBorder.none),
+                    onChanged: (value) => {setState(() {})},
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    width: 48.0,
+                    child: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        searchTextController.text = '';
+                        setState(() {
+                          search = false;
+                        });
+                      },
                     ),
                   ),
-                )),
-            body: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          for (var otpcode in filteredCodes()) ...[
-                            OTPCodeBlock(otpcode: otpcode),
-                            const SizedBox(
-                              height: 4.0,
-                            ),
-                          ],
-                        ],
-                      ),
-                    )
-                  ],
                 ),
-              ),
+              ],
             ),
-            floatingActionButton: FabButton(),
           ));
-    }
-    return Scaffold(
-      appBar: AppBar(
+    } else {
+      vappBar = AppBar(
         title: const Text("Aspis"),
         elevation: 0,
         backgroundColor: const Color(0xFF006699),
@@ -175,12 +126,17 @@ class _PageMainState extends State<PageMain> {
             onSelected: (item) => {_moreOptionSelected(item)},
           ),
         ],
-      ),
+      );
+    }
+
+    return Scaffold(
+      appBar: vappBar,
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TestRealm(),
+            TestRealm(
+              searchString: searchTextController.text,
+            ),
           ],
         ),
       ),
