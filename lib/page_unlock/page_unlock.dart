@@ -42,6 +42,7 @@ class _PageUnlockState extends State<PageUnlock> {
         .encrypt("mAEFuw90ebncuasethesthsethse hsseti203bjci0jbcji 0-beI) YCuI)BWEc", iv: iv);
 
     print("AES key - ${encrypted.bytes}");
+    print("AES key - ${encrypted}");
 
     // TODO: ensure encrypted bytes is atleast 64 bytes
     // needs some more testing without the try catch

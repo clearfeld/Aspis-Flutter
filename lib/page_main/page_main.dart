@@ -34,7 +34,9 @@ class _PageMainState extends State<PageMain> {
     if (otpCodes != null) {
       var searchText = searchTextController.text.toLowerCase();
       for (var otpCode in otpCodes!) {
-        if (otpCode.title.toLowerCase().contains(searchText) || otpCode.issuer!.toLowerCase().contains(searchText) || searchText == '') {
+        if (otpCode.title.toLowerCase().contains(searchText) ||
+            otpCode.issuer!.toLowerCase().contains(searchText) ||
+            searchText == '') {
           filteredList.add(otpCode);
         }
       }
@@ -74,41 +76,42 @@ class _PageMainState extends State<PageMain> {
   Widget build(BuildContext context) {
     if (search) {
       return WillPopScope(
-        onWillPop: () async {
-          searchTextController.text = '';
-          setState(() {search = false;});
-          return false;
-        },
-        child: Scaffold(
+          onWillPop: () async {
+            searchTextController.text = '';
+            setState(() {
+              search = false;
+            });
+            return false;
+          },
+          child: Scaffold(
             appBar: AppBar(
-              backgroundColor: const Color(0xFF006699),
-              // The search area here
-              title: Container(
-                width: double.infinity,
-                height: 40,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
-                child: Center(
-                  child: TextField(
-                    controller: searchTextController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          /* Clear the search field */
-                          setState(() {
-                            searchTextController.text = '';
-                          });
-                        },
-                      ),
-                      hintText: 'Search...',
-                      border: InputBorder.none
+                backgroundColor: const Color(0xFF006699),
+                // The search area here
+                title: Container(
+                  width: double.infinity,
+                  height: 40,
+                  decoration:
+                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                    child: TextField(
+                      controller: searchTextController,
+                      decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              /* Clear the search field */
+                              setState(() {
+                                searchTextController.text = '';
+                              });
+                            },
+                          ),
+                          hintText: 'Search...',
+                          border: InputBorder.none),
+                      onChanged: (value) => {setState(() {})},
                     ),
-                    onChanged: (value) => { setState(() {}) },
                   ),
-                ),
-              )
-            ),
+                )),
             body: SingleChildScrollView(
               child: Center(
                 child: Column(
@@ -135,8 +138,7 @@ class _PageMainState extends State<PageMain> {
               ),
             ),
             floatingActionButton: const FabButton(),
-        )
-      );
+          ));
     }
     return Scaffold(
       appBar: AppBar(
@@ -145,9 +147,12 @@ class _PageMainState extends State<PageMain> {
         backgroundColor: const Color(0xFF006699),
         actions: [
           IconButton(
-            onPressed: () => {setState(() {search = true;})},
-            icon: const Icon(Icons.search)
-          ),
+              onPressed: () => {
+                    setState(() {
+                      search = true;
+                    })
+                  },
+              icon: const Icon(Icons.search)),
           PopupMenuButton(
             icon: const Icon(
               Icons.more_vert,
@@ -172,13 +177,11 @@ class _PageMainState extends State<PageMain> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TestRealm(),
-            ],
-          ),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TestRealm(),
+          ],
         ),
       ),
       floatingActionButton: const FabButton(),

@@ -72,19 +72,23 @@ class _TestRealmState extends State<TestRealm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 16, 0, 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const SizedBox(
-            height: 16,
+        children: [
+          Wrap(
+            children: <Widget>[
+              const SizedBox(
+                height: 16,
+              ),
+              for (var otpcode in OTPCodes!) ...[
+                OTPCodeBlock(otpcode: otpcode),
+                SizedBox(
+                  height: 4.0,
+                ),
+              ],
+            ],
           ),
-          for (var otpcode in OTPCodes!) ...[
-            OTPCodeBlock(otpcode: otpcode),
-            SizedBox(
-              height: 4.0,
-            ),
-          ],
           TextButton(onPressed: () => {addTestDataToRealm()}, child: const Text("Test Data")),
           TextButton(onPressed: () => {readTestDataToRealm()}, child: const Text("Read Data"))
         ],

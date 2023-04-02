@@ -78,26 +78,39 @@ class _ScanPageState extends State<ScanPage> {
 
       var uri = Uri.parse(otpString);
       uri.queryParameters.forEach((k, v) {
-        switch(k) {
-          case 'secret': {
-            newOtp.secret = v;
-          } break;
-          case 'issuer': {
-            newOtp.issuer = v;
-          } break;
-          case 'algorithm': {
-            newOtp.algorithm = v;
-          } break;
-          case 'digits': {
-            newOtp.digits = int.parse(v);
-          } break;
-          case 'counter': {
-            newOtp.counter = v;
-          } break;
-          case 'period': {
-            newOtp.period = v;
-          } break;
-          default: {}
+        switch (k) {
+          case 'secret':
+            {
+              newOtp.secret = v;
+            }
+            break;
+          case 'issuer':
+            {
+              newOtp.issuer = v;
+            }
+            break;
+          case 'algorithm':
+            {
+              newOtp.algorithm = v;
+            }
+            break;
+          case 'digits':
+            {
+              newOtp.digits = int.parse(v);
+            }
+            break;
+          case 'counter':
+            {
+              newOtp.counter = v;
+            }
+            break;
+          case 'period':
+            {
+              newOtp.period = v;
+            }
+            break;
+          default:
+            {}
         }
       });
 
@@ -127,8 +140,7 @@ class _ScanPageState extends State<ScanPage> {
           if (newOtp.type == 'hotp') {
             newOtp = OtpEntry();
             throw "Invalid Token4";
-          }
-          else {
+          } else {
             newOtp.counter = '0';
           }
         }
@@ -136,19 +148,18 @@ class _ScanPageState extends State<ScanPage> {
           if (newOtp.type == 'hotp') {
             newOtp = OtpEntry();
             throw "Invalid Token5";
-          }
-          else {
+          } else {
             newOtp.period = '30';
           }
         }
         if (newOtp.algorithm == '') {
           newOtp.algorithm = 'SHA1';
         }
-      } catch(e) {
+      } catch (e) {
         Navigator.pop(context);
       }
 
-      barcode = BarcodeCapture(barcodes: []);
+      barcode = BarcodeCapture(barcodes: [], raw: []);
       //Navigator.pop(context);
       //Navigator.pop(context);
 
@@ -156,18 +167,21 @@ class _ScanPageState extends State<ScanPage> {
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (BuildContext context, Animation<double> animation1,
-                Animation<double> animation2) {
+            pageBuilder:
+                (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
               return const PageManualEntry();
             },
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
           ),
-        ).then((value) {
-          newOtp = OtpEntry();
-          Navigator.pop(context);
-        },);
-      };
+        ).then(
+          (value) {
+            newOtp = OtpEntry();
+            Navigator.pop(context);
+          },
+        );
+      }
+      ;
 
       //Navigator.push(context, MaterialPageRoute(builder: (context) =>
       //    FoundCodeScreen(screenClosed: _screenWasClosed, value: barcodes),));
@@ -204,7 +218,9 @@ class _FoundCodeScreenState extends State<FoundCodeScreen> {
             widget.screenClosed();
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_outlined,),
+          icon: Icon(
+            Icons.arrow_back_outlined,
+          ),
         ),
       ),
     );

@@ -59,7 +59,16 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
         }
       },
       child: Container(
-        color: customColors!.background,
+        margin: const EdgeInsets.all(8.0),
+        // color: customColors!.background,
+        constraints: const BoxConstraints(maxWidth: 320),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: customColors!.background,
+          boxShadow: [
+            BoxShadow(color: customColors.background ?? Colors.red, spreadRadius: 4),
+          ],
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
