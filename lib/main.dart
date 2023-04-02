@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:aspis/page_main/page_main.dart';
 import 'package:aspis/page_unlock/page_unlock.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -46,6 +49,19 @@ class MyApp extends StatelessWidget {
       //     primarySwatch: Colors.blue,
       //   ),
       routerConfig: _router,
+
+      // locale: const Locale("fr"),
+
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('fr'), // French
+      ],
     );
   }
 }

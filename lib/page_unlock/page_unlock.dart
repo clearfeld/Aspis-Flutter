@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as pe;
 import 'package:realm/realm.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PageUnlock extends StatefulWidget {
   const PageUnlock({super.key});
@@ -99,7 +100,8 @@ class _PageUnlockState extends State<PageUnlock> {
 
                 const SizedBox(height: 16),
 
-                const Text("Enter Password",
+                Text(AppLocalizations.of(context)?.enterPassword ?? "",
+                    // "Enter Password",
                     style: TextStyle(
                       fontSize: 24,
                     )),

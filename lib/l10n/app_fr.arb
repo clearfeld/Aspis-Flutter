@@ -1,0 +1,6 @@
+{
+  "enterPassword": "Entrée mot de passe",
+  "@enterPassword": {
+    "description": "Vault unlock screen title - enter password"
+  }
+}
