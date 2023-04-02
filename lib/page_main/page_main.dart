@@ -137,7 +137,7 @@ class _PageMainState extends State<PageMain> {
                 ),
               ),
             ),
-            floatingActionButton: const FabButton(),
+            floatingActionButton: FabButton(),
           ));
     }
     return Scaffold(
@@ -184,7 +184,7 @@ class _PageMainState extends State<PageMain> {
           ],
         ),
       ),
-      floatingActionButton: const FabButton(),
+      floatingActionButton: FabButton(),
     );
   }
 }
