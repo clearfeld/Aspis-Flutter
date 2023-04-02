@@ -66,7 +66,9 @@ class _PageUnlockState extends State<PageUnlock> {
       setState(
         () => errorMsg = "",
       );
-      context.go('/home');
+
+      // context.go('/home');
+      context.pushReplacement('/home');
     } catch (e) {
       setState(
         () => errorMsg = "Wrong password.",
