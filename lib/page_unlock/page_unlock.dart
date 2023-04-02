@@ -42,8 +42,8 @@ class _PageUnlockState extends State<PageUnlock> {
     final encrypted = encrypter
         .encrypt("mAEFuw90ebncuasethesthsethse hsseti203bjci0jbcji 0-beI) YCuI)BWEc", iv: iv);
 
-    print("AES key - ${encrypted.bytes}");
-    print("AES key - ${encrypted}");
+    debugPrint("AES key - ${encrypted.bytes}");
+    debugPrint("AES key - $encrypted");
 
     // TODO: ensure encrypted bytes is atleast 64 bytes
     // needs some more testing without the try catch
@@ -53,12 +53,12 @@ class _PageUnlockState extends State<PageUnlock> {
       x.add(encrypted.bytes[i]);
     }
 
-    print(x);
+    debugPrint(x.toString());
 
     // Get on-disk location of the default Realm
     final storagePath = Configuration.defaultStoragePath;
     // See value in your application
-    print(storagePath);
+    debugPrint(storagePath);
 
     try {
       final encryptedConfig = Configuration.local([Person.schema, OTP.schema], encryptionKey: x);
@@ -76,7 +76,7 @@ class _PageUnlockState extends State<PageUnlock> {
       );
       // likely wrong password failed to open realm
       // TODO: check docs if there are error codes or something better
-      print("Couldnt open realm");
+      debugPrint("Couldnt open realm");
       // TODO: have ui element showing error opening db (vault)
     }
   }
@@ -101,7 +101,7 @@ class _PageUnlockState extends State<PageUnlock> {
                 const SizedBox(height: 16),
 
                 Text(AppLocalizations.of(context)?.enterPassword ?? "",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                     )),
 

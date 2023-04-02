@@ -26,7 +26,8 @@ class _ScanPageState extends State<ScanPage> {
             icon: ValueListenableBuilder(
               valueListenable: cameraController.torchState,
               builder: (context, state, child) {
-                switch (state as TorchState) {
+                switch (state) {
+                  // as TorchState
                   case TorchState.off:
                     return const Icon(Icons.flash_off, color: Colors.grey);
                   case TorchState.on:
@@ -42,7 +43,8 @@ class _ScanPageState extends State<ScanPage> {
             icon: ValueListenableBuilder(
               valueListenable: cameraController.cameraFacingState,
               builder: (context, state, child) {
-                switch (state as CameraFacing) {
+                switch (state) {
+                  // as CameraFacing
                   case CameraFacing.front:
                     return const Icon(Icons.camera_front);
                   case CameraFacing.back:
@@ -181,16 +183,15 @@ class _ScanPageState extends State<ScanPage> {
           },
         );
       }
-      ;
 
       //Navigator.push(context, MaterialPageRoute(builder: (context) =>
       //    FoundCodeScreen(screenClosed: _screenWasClosed, value: barcodes),));
     }
   }
 
-  void _screenWasClosed() {
-    _screenOpened = false;
-  }
+//   void _screenWasClosed() {
+//     _screenOpened = false;
+//   }
 }
 
 class FoundCodeScreen extends StatefulWidget {
@@ -211,14 +212,14 @@ class _FoundCodeScreenState extends State<FoundCodeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Found Code"),
+        title: const Text("Found Code"),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
             widget.screenClosed();
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_outlined,
           ),
         ),

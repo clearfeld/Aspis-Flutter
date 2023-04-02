@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:aspis/store/test.dart';
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:otp/otp.dart' as LOTP;
+import 'package:otp/otp.dart' as pl_lotp;
 import 'package:flutter/services.dart';
 
 class OTPCodeBlock extends StatefulWidget {
@@ -17,34 +15,34 @@ class OTPCodeBlock extends StatefulWidget {
 }
 
 class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMixin {
-  String? OTPCode;
+  String? sOTPCode;
   AnimationController? controller;
 
   @override
   void initState() {
     super.initState();
 
-    GenerateOTPCode(widget.otpcode);
+    pGenerateOTPCode(widget.otpcode);
     // OTPCodes = gRealm.all<OTP>();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5),
+      duration: const Duration(seconds: 5),
     );
     // print(OTPCodes);
   }
 
-  void GenerateOTPCode(otp) {
-    print(otp);
-    print(otp.secret);
+  void pGenerateOTPCode(otp) {
+    debugPrint(otp.toString());
+    debugPrint(otp.secret);
 
     try {
-      final code = LOTP.OTP.generateTOTPCodeString(
+      final code = pl_lotp.OTP.generateTOTPCodeString(
           otp.secret, DateTime.now().millisecondsSinceEpoch,
-          length: 6, interval: 30, algorithm: LOTP.Algorithm.SHA1, isGoogle: true);
-      print(code);
-      OTPCode = code;
+          length: 6, interval: 30, algorithm: pl_lotp.Algorithm.SHA1, isGoogle: true);
+      debugPrint(code);
+      sOTPCode = code;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -54,8 +52,8 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
 
     return GestureDetector(
       onTap: () async {
-        if (OTPCode != null) {
-          await Clipboard.setData(ClipboardData(text: OTPCode));
+        if (sOTPCode != null) {
+          await Clipboard.setData(ClipboardData(text: sOTPCode));
         }
       },
       child: Container(
@@ -93,21 +91,21 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
                           Text(widget.otpcode.title),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4.0,
                       ),
                       Row(
                         children: <Widget>[
                           Text(
-                            OTPCode ?? "",
-                            style: TextStyle(fontSize: 20.0),
+                            sOTPCode ?? "",
+                            style: const TextStyle(fontSize: 20.0),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                Text("Counter"),
+                const Text("Counter"),
               ],
             ),
           ],

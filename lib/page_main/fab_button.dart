@@ -23,7 +23,6 @@ class FabButton extends StatelessWidget {
         ),
       );
     }
-    ;
   }
 
   final isMobile = defaultTargetPlatform == TargetPlatform.iOS ||
@@ -34,7 +33,6 @@ class FabButton extends StatelessWidget {
     return FloatingActionButton(
       tooltip: 'FAB',
       elevation: 0,
-      child: const Icon(Icons.add),
       backgroundColor: const Color(0xFF006699),
       onPressed: () {
         showModalBottomSheet<void>(
@@ -94,6 +92,7 @@ class FabButton extends StatelessWidget {
           },
         );
       },
+      child: const Icon(Icons.add),
     );
   }
 }

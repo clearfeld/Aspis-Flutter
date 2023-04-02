@@ -47,8 +47,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
       groupValue = "No Group";
       typeValue = newOtp.type.toUpperCase();
       hashValue = newOtp.algorithm;
-    }
-    else {
+    } else {
       titleTextController.text = "";
       secretTextController.text = "";
       issuerTextController.text = "";
@@ -86,11 +85,10 @@ class _PageManualEntryState extends State<PageManualEntry> {
       //    reverseTransitionDuration: Duration.zero,
       //  ),
       //);
-    } else if (item == 1) {
-    }
+    } else if (item == 1) {}
   }
 
-  void _save_entry() {
+  void pSaveEntry() {
     gRealm.write(() {
       gRealm.addAll([
         OTP(
@@ -117,7 +115,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
         elevation: 0,
         backgroundColor: const Color(0xFF006699),
         actions: [
-          TextButton(onPressed: () => {_save_entry()}, child: const Text("Save")),
+          TextButton(onPressed: () => {pSaveEntry()}, child: const Text("Save")),
           PopupMenuButton(
             icon: const Icon(
               Icons.more_vert,
@@ -152,7 +150,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Icon(
+                      const Icon(
                         Icons.person,
                         color: Colors.black,
                       ),
@@ -169,7 +167,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                   ),
                   Row(
                     children: <Widget>[
-                      Icon(
+                      const Icon(
                         Icons.key,
                         color: Colors.black,
                       ),
@@ -216,7 +214,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                                   groupValue = valueArg!;
                                 });
                               },
-                              items: ["No Group", "fdsa", "qwer"],
+                              items: const ["No Group", "fdsa", "qwer"],
                             )
                           ],
                         ),
@@ -228,7 +226,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                   ),
                   Row(
                     children: <Widget>[
-                      Icon(
+                      const Icon(
                         Icons.sort,
                         color: Colors.black,
                       ),
@@ -244,18 +242,18 @@ class _PageManualEntryState extends State<PageManualEntry> {
                     height: 5,
                   ),
                   ExpandablePanel(
-                    header: Padding(
+                    header: const Padding(
                       padding: EdgeInsets.only(left: 24.0, top: 10),
                       child: Text(
                         "Advanced",
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    collapsed: Column(children: []),
+                    collapsed: Column(children: const []),
                     expanded: Column(children: [
                       Row(
                         children: <Widget>[
-                          Icon(
+                          const Icon(
                             Icons.info,
                             color: Colors.black,
                           ),
@@ -271,7 +269,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                                       typeValue = valueArg!;
                                     });
                                   },
-                                  items: ["TOTP", "HOTP", "Stream", "Yandex", "MOTP"],
+                                  items: const ["TOTP", "HOTP", "Stream", "Yandex", "MOTP"],
                                 )
                               ],
                             ),
@@ -291,7 +289,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                                       hashValue = valueArg!;
                                     });
                                   },
-                                  items: ["SHA1", "SHA256", "SHA512"],
+                                  items: const ["SHA1", "SHA256", "SHA512"],
                                 )
                               ],
                             ),

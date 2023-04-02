@@ -1,21 +1,15 @@
-import 'dart:convert';
-import 'dart:math';
-import 'package:otp/otp.dart' as LOTP;
-import 'package:base32/base32.dart';
+import 'package:otp/otp.dart' as pl_lotp;
 import 'package:aspis/global_realm.dart';
 import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto/crypto.dart';
-import 'package:encrypt/encrypt.dart' as pe;
 
 import 'package:aspis/page_main/otp_code_block/otp_code_block.dart';
-import 'package:aspis/components/flat_textfield.dart';
 import 'package:realm/realm.dart';
 
 class TestRealm extends StatefulWidget {
-  TestRealm({super.key, required this.searchString});
+  const TestRealm({super.key, required this.searchString});
 
-  late String searchString = "";
+  final String searchString;
 
   @override
   State<TestRealm> createState() => _TestRealmState();
@@ -24,22 +18,22 @@ class TestRealm extends StatefulWidget {
 class _TestRealmState extends State<TestRealm> {
   final passwordTextController = TextEditingController();
 
-  RealmResults<OTP>? OTPCodes;
+  RealmResults<OTP>? pOTPCodes;
 
   @override
   void initState() {
     super.initState();
 
-    OTPCodes = gRealm.all<OTP>();
+    pOTPCodes = gRealm.all<OTP>();
 
-    print(OTPCodes);
+    debugPrint(pOTPCodes.toString());
   }
 
   List<OTP> filteredCodes() {
     List<OTP> filteredList = [];
-    if (OTPCodes != null) {
+    if (pOTPCodes != null) {
       var searchText = widget.searchString.toLowerCase();
-      for (var otpCode in OTPCodes!) {
+      for (var otpCode in pOTPCodes!) {
         if (otpCode.title.toLowerCase().contains(searchText) ||
             otpCode.issuer!.toLowerCase().contains(searchText) ||
             searchText == '') {
@@ -69,12 +63,12 @@ class _TestRealmState extends State<TestRealm> {
     final otp = gRealm.all<OTP>();
     for (var i = 0; i < otp.length; ++i) {
       debugPrint(otp[i].title);
-      // GenerateOTPCode(otp[i]);
+      // pGenerateOTPCode(otp[i]);
     }
   }
 
 // For testing purposes
-  void GenerateOTPCode(otp) {
+  void pGenerateOTPCode(otp) {
     debugPrint(otp);
     // if (otp.title != "NP") {
     //   return;
@@ -82,17 +76,14 @@ class _TestRealmState extends State<TestRealm> {
 
     debugPrint(otp.secret);
 
-    final code = LOTP.OTP.generateTOTPCodeString(otp.secret, DateTime.now().millisecondsSinceEpoch,
-        length: 6, interval: 30, algorithm: LOTP.Algorithm.SHA1, isGoogle: true);
+    final code = pl_lotp.OTP.generateTOTPCodeString(
+        otp.secret, DateTime.now().millisecondsSinceEpoch,
+        length: 6, interval: 30, algorithm: pl_lotp.Algorithm.SHA1, isGoogle: true);
     debugPrint(code);
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(filteredCodes().toString());
-    debugPrint(OTPCodes!.toString());
-    debugPrint(widget.searchString);
-
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 16, 0, 16),
       child: Column(
@@ -104,7 +95,7 @@ class _TestRealmState extends State<TestRealm> {
               ),
               for (var otpcode in filteredCodes()) ...[
                 OTPCodeBlock(otpcode: otpcode),
-                SizedBox(
+                const SizedBox(
                   height: 4.0,
                 ),
               ],

@@ -54,12 +54,12 @@ class _PageMainState extends State<PageMain> {
 
   @override
   Widget build(BuildContext context) {
-    var vappBar;
+    AppBar vappBar;
     if (search) {
       vappBar = AppBar(
           backgroundColor: const Color(0xFF006699),
           // The search area here
-          title: Container(
+          title: SizedBox(
             width: double.infinity,
             height: 40,
             child: Row(
@@ -75,7 +75,7 @@ class _PageMainState extends State<PageMain> {
                   ),
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     width: 48.0,
                     child: IconButton(
                       icon: const Icon(Icons.clear),

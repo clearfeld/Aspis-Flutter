@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:habit_tracker/theme.dart';
 
-typedef void SetValueStringCallback(String? valueArg);
+typedef SetValueStringCallback = void Function(String? valueArg);
 
 class FlatDropdown extends StatefulWidget {
   const FlatDropdown({
@@ -34,7 +34,7 @@ class _FlatDropdown extends State<FlatDropdown> {
     // final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return DecoratedBox(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           // color: customColors.background, //  Color.fromRGBO(41, 41, 41, 1.0),
           //background color of dropdown button
           // border: Border.all(color: Colors.black38, width:3), //border of dropdown button
@@ -46,44 +46,43 @@ class _FlatDropdown extends State<FlatDropdown> {
           // ]
           ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        child: InputDecorator(
-          decoration: InputDecoration(
-            labelText: widget.labelText,
-            labelStyle: TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-              height: 3,
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: InputDecorator(
+            decoration: InputDecoration(
+              labelText: widget.labelText,
+              labelStyle: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+                height: 3,
+              ),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.only(top: -5),
             ),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: -5),
-          ),
-          child: DropdownButton(
-            value: widget.value,
-            icon: const Icon(Icons.arrow_downward),
-            onChanged: (String? valueArg) {
-              widget.onValueChanged(valueArg);
-            },
-            items: widget.items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+            child: DropdownButton(
+              value: widget.value,
+              icon: const Icon(Icons.arrow_downward),
+              onChanged: (String? valueArg) {
+                widget.onValueChanged(valueArg);
+              },
+              items: widget.items.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
 
-            // iconEnabledColor: customColors.text_color, //Icon color
-            style: const TextStyle(
-              // color: customColors.text_color, //Font color
-              color: Colors.black,
-              fontSize: 16, //font size on dropdown button
+              // iconEnabledColor: customColors.text_color, //Icon color
+              style: const TextStyle(
+                // color: customColors.text_color, //Font color
+                color: Colors.black,
+                fontSize: 16, //font size on dropdown button
+              ),
+
+              dropdownColor: Colors.blueAccent, //dropdown background color
+              underline: Container(), //remove underline
+              isExpanded: true, //make true to make width 100%
             ),
-
-            dropdownColor: Colors.blueAccent, //dropdown background color
-            underline: Container(), //remove underline
-            isExpanded: true, //make true to make width 100%
-          ),
-        )
-      ),
+          )),
     );
   }
 }

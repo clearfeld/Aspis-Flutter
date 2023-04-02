@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:aspis/components/flat_setting.dart';
 
-enum ColorTheme {dark, light}
-enum Language {en, fr}
+enum ColorTheme { dark, light }
+
+enum Language { en, fr }
 
 class PageSettings extends StatefulWidget {
   const PageSettings({Key? key}) : super(key: key);
@@ -55,17 +56,18 @@ class _PageSettingsState extends State<PageSettings> {
                 height: 15,
               ),
               InkWell(
-                child: FlatSetting(settingNameText: 'Theme', descriptionNameText: '${_theme.toString().substring(11)} Theme'),
+                child: FlatSetting(
+                    settingNameText: 'Theme',
+                    descriptionNameText: '${_theme.toString().substring(11)} Theme'),
                 onTap: () {
                   showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Select your desired theme"),
-                        content: StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setState){
-                            return Column(
-                              children: [
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            title: const Text("Select your desired theme"),
+                            content: StatefulBuilder(
+                                builder: (BuildContext context, StateSetter setState) {
+                              return Column(children: [
                                 ListTile(
                                   title: const Text("Dark Mode"),
                                   leading: Radio<ColorTheme>(
@@ -77,7 +79,8 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
                                 ListTile(
                                   title: const Text("Light Mode"),
@@ -90,47 +93,41 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
-                              ]
-                            );
-                          }
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            child: const Text('Okay'),
-                            onPressed: () {
-                              // setState(() => currentValue = initialValue);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                        scrollable: true
-                      );
-                    }
-                  );
+                              ]);
+                            }),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: const Text('Okay'),
+                                onPressed: () {
+                                  // setState(() => currentValue = initialValue);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            scrollable: true);
+                      });
                 },
               ),
-              
               const SizedBox(
                 height: 15,
               ),
-
-
               InkWell(
                 //Language {engUsa, engCad, engEb, engPir}
                 child: FlatSetting(settingNameText: 'Language', descriptionNameText: 'English'),
                 onTap: () {
                   showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Select your desired language"),
-                        content: StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setState){
-                            return Column(
-                              children: [
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            title: const Text("Select your desired language"),
+                            content: StatefulBuilder(
+                                builder: (BuildContext context, StateSetter setState) {
+                              return Column(children: [
                                 ListTile(
                                   title: const Text("English"),
                                   leading: Radio<Language>(
@@ -142,7 +139,8 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
                                 ListTile(
                                   title: const Text("French"),
@@ -155,26 +153,24 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
-                              ]
-                            );
-                          }
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            child: const Text('Okay'),
-                            onPressed: () {
-                              // setState(() => currentValue = initialValue);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                        scrollable: true
-                      );
-                    }
-                  );
+                              ]);
+                            }),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: const Text('Okay'),
+                                onPressed: () {
+                                  // setState(() => currentValue = initialValue);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            scrollable: true);
+                      });
                 },
               ),
               const SizedBox(
@@ -190,34 +186,52 @@ class _PageSettingsState extends State<PageSettings> {
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Separate Password for backup & export', descriptionNameText: "If enabled, the password that is used to unlock the app can't be used to decrypt backups and exports", showSwitch: true, switchValue: separatePw),
+              FlatSetting(
+                  settingNameText: 'Separate Password for backup & export',
+                  descriptionNameText:
+                      "If enabled, the password that is used to unlock the app can't be used to decrypt backups and exports",
+                  showSwitch: true,
+                  switchValue: separatePw),
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Screen Security', descriptionNameText: 'Block screenshots and captures within the app', showSwitch: true, switchValue: screenSecurity),
+              FlatSetting(
+                  settingNameText: 'Screen Security',
+                  descriptionNameText: 'Block screenshots and captures within the app',
+                  showSwitch: true,
+                  switchValue: screenSecurity),
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Tap to Reveal', descriptionNameText: 'Tokens will be hidden until tapped.', showSwitch: true, switchValue: tapToReveal),
+              FlatSetting(
+                  settingNameText: 'Tap to Reveal',
+                  descriptionNameText: 'Tokens will be hidden until tapped.',
+                  showSwitch: true,
+                  switchValue: tapToReveal),
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Timeout for Tap to Reveal', descriptionNameText: 'Disabled', disabled: true,),
+              FlatSetting(
+                settingNameText: 'Timeout for Tap to Reveal',
+                descriptionNameText: 'Disabled',
+                disabled: true,
+              ),
               const SizedBox(
                 height: 15,
               ),
               InkWell(
-                child: FlatSetting(settingNameText: 'Auto Lock', descriptionNameText: 'Determine when the app is locked'),
+                child: FlatSetting(
+                    settingNameText: 'Auto Lock',
+                    descriptionNameText: 'Determine when the app is locked'),
                 onTap: () {
                   showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Automatically lock Aegis when"),
-                        content: StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setState){
-                            return Column(
-                              children: [
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            title: const Text("Automatically lock Aegis when"),
+                            content: StatefulBuilder(
+                                builder: (BuildContext context, StateSetter setState) {
+                              return Column(children: [
                                 ListTile(
                                   title: const Text("The back button is pressed"),
                                   leading: Checkbox(
@@ -228,7 +242,8 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
                                 ListTile(
                                   title: const Text("The app is minimized"),
@@ -240,7 +255,8 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
                                 ListTile(
                                   title: const Text("The device is locked"),
@@ -252,26 +268,24 @@ class _PageSettingsState extends State<PageSettings> {
                                       });
                                     },
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                                 ),
-                              ]
-                            );
-                          }
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            child: const Text('Okay'),
-                            onPressed: () {
-                              // setState(() => currentValue = initialValue);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                        scrollable: true
-                      );
-                    }
-                  );
+                              ]);
+                            }),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: const Text('Okay'),
+                                onPressed: () {
+                                  // setState(() => currentValue = initialValue);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            scrollable: true);
+                      });
                 },
               ),
               const SizedBox(
@@ -294,11 +308,12 @@ class _PageSettingsState extends State<PageSettings> {
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Automatically backup keys',
-                          descriptionNameText: 'Automatically creates backups of the vault on external storage when changes are made. This is only supported for encrypted vaults.',
-                          showSwitch: true,
-                          switchValue: backupKeys
-              ),
+              FlatSetting(
+                  settingNameText: 'Automatically backup keys',
+                  descriptionNameText:
+                      'Automatically creates backups of the vault on external storage when changes are made. This is only supported for encrypted vaults.',
+                  showSwitch: true,
+                  switchValue: backupKeys),
               const SizedBox(
                 height: 15,
               ),
@@ -319,11 +334,15 @@ class _PageSettingsState extends State<PageSettings> {
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Import from file', descriptionNameText: 'Import tokens from a file'),
+              FlatSetting(
+                  settingNameText: 'Import from file',
+                  descriptionNameText: 'Import tokens from a file'),
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Import from app', descriptionNameText: 'Import tokens from an app (requires root access)'),
+              FlatSetting(
+                  settingNameText: 'Import from app',
+                  descriptionNameText: 'Import tokens from an app (requires root access)'),
               const SizedBox(
                 height: 15,
               ),
@@ -331,7 +350,9 @@ class _PageSettingsState extends State<PageSettings> {
               const SizedBox(
                 height: 15,
               ),
-              FlatSetting(settingNameText: 'Export for Other Apps', descriptionNameText: 'Generates export QR codes compatible with other apps'),
+              FlatSetting(
+                  settingNameText: 'Export for Other Apps',
+                  descriptionNameText: 'Generates export QR codes compatible with other apps'),
               const SizedBox(
                 height: 15,
               ),
