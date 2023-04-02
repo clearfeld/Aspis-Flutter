@@ -101,7 +101,6 @@ class _PageUnlockState extends State<PageUnlock> {
                 const SizedBox(height: 16),
 
                 Text(AppLocalizations.of(context)?.enterPassword ?? "",
-                    // "Enter Password",
                     style: TextStyle(
                       fontSize: 24,
                     )),
