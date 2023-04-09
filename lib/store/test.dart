@@ -28,6 +28,7 @@ class _OTP {
 
   late String type;
   late String hashFunc;
+
   late int period;
   late int digits;
   late int usageCount;

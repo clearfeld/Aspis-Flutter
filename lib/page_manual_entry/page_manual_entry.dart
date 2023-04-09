@@ -11,7 +11,9 @@ import 'package:expandable/expandable.dart';
 import 'package:aspis/singleton_otp_entry.dart';
 
 class PageManualEntry extends StatefulWidget {
-  const PageManualEntry({super.key});
+  const PageManualEntry({super.key, this.fOTPCode});
+
+  final OTP? fOTPCode;
 
   @override
   State<PageManualEntry> createState() => _PageManualEntryState();
@@ -38,6 +40,8 @@ class _PageManualEntryState extends State<PageManualEntry> {
   @override
   void initState() {
     super.initState();
+
+    // QUESTION(clearfeld): is this for the QR code scanner?
     if (newOtp.secret != "") {
       titleTextController.text = newOtp.name;
       secretTextController.text = newOtp.secret;
@@ -48,6 +52,16 @@ class _PageManualEntryState extends State<PageManualEntry> {
       groupValue = "No Group";
       typeValue = newOtp.type.toUpperCase();
       hashValue = newOtp.algorithm;
+    } else if (widget.fOTPCode != null) {
+      titleTextController.text = widget.fOTPCode?.title ?? "";
+      secretTextController.text = widget.fOTPCode?.secret ?? "";
+      issuerTextController.text = widget.fOTPCode?.issuer ?? "";
+      periodTextController.text = widget.fOTPCode?.period.toString() ?? "30";
+      digitsTextController.text = widget.fOTPCode?.digits.toString() ?? "6";
+      usageTextController.text = widget.fOTPCode?.usageCount.toString() ?? "0";
+      groupValue = "No Group";
+      typeValue = widget.fOTPCode?.type.toUpperCase() ?? "TOTP";
+      hashValue = widget.fOTPCode?.hashFunc ?? "SHA1";
     } else {
       titleTextController.text = "";
       secretTextController.text = "";
@@ -90,22 +104,44 @@ class _PageManualEntryState extends State<PageManualEntry> {
   }
 
   void pSaveEntry() {
-    gRealm.write(() {
-      gRealm.addAll([
-        OTP(
-            ObjectId(),
-            titleTextController.text,
-            secretTextController.text,
-            issuer: issuerTextController.text,
-            group: groupValue,
-            notes: notesTextController.text,
-            typeValue,
-            hashValue,
-            int.parse(periodTextController.text),
-            int.parse(digitsTextController.text),
-            int.parse(usageTextController.text))
-      ]);
-    });
+    if (widget.fOTPCode == null) {
+      gRealm.write(() {
+        gRealm.addAll([
+          OTP(
+              ObjectId(),
+              titleTextController.text,
+              secretTextController.text,
+              issuer: issuerTextController.text,
+              group: groupValue,
+              notes: notesTextController.text,
+              typeValue,
+              hashValue,
+              int.parse(periodTextController.text),
+              int.parse(digitsTextController.text),
+              int.parse(usageTextController.text))
+        ]);
+      });
+    } else {
+      if (widget.fOTPCode != null) {
+        gRealm.write(() {
+          gRealm.add<OTP>(
+            OTP(
+              (widget.fOTPCode?.id as ObjectId),
+              titleTextController.text,
+              secretTextController.text,
+              issuer: issuerTextController.text,
+              group: groupValue,
+              notes: notesTextController.text,
+              typeValue,
+              hashValue,
+              int.parse(periodTextController.text),
+              int.parse(digitsTextController.text),
+              int.parse(usageTextController.text)
+           )
+          , update: true);
+        });
+      }
+    }
   }
 
   @override
@@ -116,28 +152,33 @@ class _PageManualEntryState extends State<PageManualEntry> {
         elevation: 0,
         backgroundColor: const Color(0xFF006699),
         actions: [
-          TextButton(onPressed: () => {pSaveEntry()}, child: const Text("Save")),
-          PopupMenuButton(
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            itemBuilder: (context) => [
-              const PopupMenuItem<int>(
-                value: 0,
-                child: Text(
-                  "Edit Icon",
-                ),
-              ),
-              const PopupMenuItem<int>(
-                value: 1,
-                child: Text(
-                  "Reset Usage Count",
-                ),
-              ),
-            ],
-            onSelected: (item) => {_moreOptionSelected(item)},
-          ),
+          TextButton(
+              onPressed: () => {pSaveEntry()},
+              child: const Text("Save",
+                  style: TextStyle(
+                    color: const Color(0xFFFCFCFC),
+                  ))),
+          //   PopupMenuButton(
+          //     icon: const Icon(
+          //       Icons.more_vert,
+          //       color: Colors.white,
+          //     ),
+          //     itemBuilder: (context) => [
+          //       const PopupMenuItem<int>(
+          //         value: 0,
+          //         child: Text(
+          //           "Edit Icon",
+          //         ),
+          //       ),
+          //       const PopupMenuItem<int>(
+          //         value: 1,
+          //         child: Text(
+          //           "Reset Usage Count",
+          //         ),
+          //       ),
+          //     ],
+          //     onSelected: (item) => {_moreOptionSelected(item)},
+          //   ),
         ],
       ),
       body: SingleChildScrollView(
@@ -149,18 +190,13 @@ class _PageManualEntryState extends State<PageManualEntry> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
-                    Container(
-                        height: 160,
-                  child: IconSelector(
-
+                  Container(
+                    height: 160,
+                    child: IconSelector(),
                   ),
-                  ),
-
                   const Divider(
                     color: Colors.white,
                   ),
-
                   Row(
                     children: <Widget>[
                       const Icon(
@@ -259,12 +295,13 @@ class _PageManualEntryState extends State<PageManualEntry> {
                   ),
                   ExpandablePanel(
                     header: const Padding(
-                      padding: EdgeInsets.only(left: 24.0, top: 8),
+                      padding: EdgeInsets.only(left: 4.0, top: 8),
                       child: Text(
                         "Advanced",
                         textAlign: TextAlign.left,
                       ),
                     ),
+                    theme: const ExpandableThemeData(iconColor: Colors.white),
                     collapsed: Column(children: const []),
                     expanded: Column(children: [
                       Row(

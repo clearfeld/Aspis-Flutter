@@ -31,7 +31,7 @@ class FabButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      tooltip: 'FAB',
+      // tooltip: 'FAB',
       elevation: 0,
       backgroundColor: const Color(0xFF006699),
       onPressed: () {
@@ -46,7 +46,7 @@ class FabButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('Modal BottomSheet'),
+                    // const Text('Modal BottomSheet'),
                     ElevatedButton(
                         child: const Text('Enter Manually'),
                         onPressed: () {
@@ -63,6 +63,9 @@ class FabButton extends StatelessWidget {
                             ),
                           );
                         }),
+
+                        SizedBox(height: 8.0,),
+
                     if (isMobile) ...[
                       ElevatedButton(
                         child: const Text('Scan QR Code - mobile only'),
@@ -81,6 +84,9 @@ class FabButton extends StatelessWidget {
                         },
                       ),
                     ],
+
+                    SizedBox(height: 8.0,),
+
                     ElevatedButton(
                       child: const Text('Close BottomSheet'),
                       onPressed: () => Navigator.pop(context),

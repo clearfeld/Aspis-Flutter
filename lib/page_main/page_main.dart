@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:aspis/global_realm.dart';
 import 'package:aspis/page_main/refresh_timer.dart';
+import 'package:aspis/page_manual_entry/page_manual_entry.dart';
 import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
 
@@ -163,10 +164,24 @@ class _PageMainState extends State<PageMain> {
           //   ),
 
           IconButton(
-            onPressed: () => {
+            onPressed: () {
               setState(() {
                 appbarState = EAppbarState.none;
-              })
+              });
+
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (BuildContext context, Animation<double> animation1,
+                      Animation<double> animation2) {
+                    return PageManualEntry(
+                        fOTPCode: selectedOTP,
+                    );
+                  },
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
             },
             icon: const Icon(Icons.edit),
           ),
@@ -228,12 +243,12 @@ class _PageMainState extends State<PageMain> {
                   "About",
                 ),
               ),
-              const PopupMenuItem<int>(
-                value: 1,
-                child: Text(
-                  "Settings",
-                ),
-              ),
+              //   const PopupMenuItem<int>(
+              //     value: 1,
+              //     child: Text(
+              //       "Settings",
+              //     ),
+              //   ),
             ],
             onSelected: (item) => {_moreOptionSelected(item)},
           ),
@@ -245,13 +260,11 @@ class _PageMainState extends State<PageMain> {
       appBar: vappBar,
       body: Column(
         children: [
-
           Row(
             children: const <Widget>[
               RefreshTimer(),
             ],
           ),
-
           Center(
             child: SingleChildScrollView(
               child: Column(

@@ -74,7 +74,7 @@ class _FlatDropdown extends State<FlatDropdown> {
               // iconEnabledColor: customColors.text_color, //Icon color
               style: const TextStyle(
                 // color: customColors.text_color, //Font color
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 16, //font size on dropdown button
               ),
 
