@@ -1,3 +1,5 @@
+import 'package:aspis/global_realm.dart';
+import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aspis/page_main/fab_button.dart';
@@ -6,6 +8,12 @@ import 'package:aspis/page_settings/page_settings.dart';
 import 'package:aspis/page_about/page_about.dart';
 
 import 'package:aspis/page_main/test_realm.dart';
+
+enum EAppbarState {
+  none,
+  search,
+  selected,
+}
 
 class PageMain extends StatefulWidget {
   const PageMain({super.key});
@@ -16,12 +24,22 @@ class PageMain extends StatefulWidget {
 
 class _PageMainState extends State<PageMain> {
   final searchTextController = TextEditingController();
-  bool search = false;
+  EAppbarState appbarState = EAppbarState.none;
+  var selectedOTP = null;
 
   @override
   void dispose() {
     super.dispose();
     searchTextController.dispose();
+  }
+
+  void selectOTPCode(arg) {
+    print("here");
+
+    setState(() {
+      selectedOTP = arg;
+      appbarState = EAppbarState.selected;
+    });
   }
 
   void _moreOptionSelected(int item) {
@@ -52,12 +70,42 @@ class _PageMainState extends State<PageMain> {
     }
   }
 
+  void _moreOptionSelected_Selected(int item) {
+    if (item == 0) {
+      if(selectedOTP != null) {
+        // print(selectedOTP);
+        gRealm.write(() {
+            gRealm.delete<OTP>(selectedOTP);
+        });
+
+        setState(() {
+          selectedOTP = null;
+          appbarState = EAppbarState.none;
+        });
+      }
+    }
+    // } else if (item == 1) {
+    //   Navigator.push(
+    //     context,
+    //     PageRouteBuilder(
+    //       pageBuilder:
+    //           (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
+    //         return const PageSettings();
+    //       },
+    //       transitionDuration: Duration.zero,
+    //       reverseTransitionDuration: Duration.zero,
+    //     ),
+    //   );
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     AppBar vappBar;
-    if (search) {
+    if (appbarState == EAppbarState.search) {
       vappBar = AppBar(
           backgroundColor: const Color(0xFF006699),
+          elevation: 0,
           // The search area here
           title: SizedBox(
             width: double.infinity,
@@ -82,7 +130,7 @@ class _PageMainState extends State<PageMain> {
                       onPressed: () {
                         searchTextController.text = '';
                         setState(() {
-                          search = false;
+                          appbarState = EAppbarState.none;
                         });
                       },
                     ),
@@ -91,6 +139,69 @@ class _PageMainState extends State<PageMain> {
               ],
             ),
           ));
+    } else if (appbarState == EAppbarState.selected) {
+      vappBar = AppBar(
+        elevation: 0,
+        backgroundColor: const Color(0xFF006699),
+        title: IconButton(
+          onPressed: () => {
+            setState(() {
+              appbarState = EAppbarState.none;
+            })
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        actions: [
+          //   IconButton(
+          //     onPressed: () => {
+          //       setState(() {
+          //         appbarState = EAppbarState.none;
+          //       })
+          //     },
+          //     icon: const Icon(Icons.copy),
+          //   ),
+
+          IconButton(
+            onPressed: () => {
+              setState(() {
+                appbarState = EAppbarState.none;
+              })
+            },
+            icon: const Icon(Icons.edit),
+          ),
+
+          //   IconButton(
+          //     onPressed: () => {
+          //       setState(() {
+          //         appbarState = EAppbarState.none;
+          //       })
+          //     },
+          //     icon: const Icon(Icons.qr_code),
+          //   ),
+
+          PopupMenuButton(
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            itemBuilder: (context) => [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Text(
+                  "Delete",
+                ),
+              ),
+              //   const PopupMenuItem<int>(
+              //     value: 1,
+              //     child: Text(
+              //       "Settings",
+              //     ),
+              //   ),
+            ],
+            onSelected: (item) => {_moreOptionSelected_Selected(item)},
+          ),
+        ],
+      );
     } else {
       vappBar = AppBar(
         title: const Text("Aspis"),
@@ -100,7 +211,7 @@ class _PageMainState extends State<PageMain> {
           IconButton(
               onPressed: () => {
                     setState(() {
-                      search = true;
+                      appbarState = EAppbarState.search;
                     })
                   },
               icon: const Icon(Icons.search)),
@@ -134,9 +245,7 @@ class _PageMainState extends State<PageMain> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            TestRealm(
-              searchString: searchTextController.text,
-            ),
+            TestRealm(searchString: searchTextController.text, onSelectedOTPCode: selectOTPCode),
           ],
         ),
       ),

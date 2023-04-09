@@ -7,9 +7,14 @@ import 'package:aspis/page_main/otp_code_block/otp_code_block.dart';
 import 'package:realm/realm.dart';
 
 class TestRealm extends StatefulWidget {
-  const TestRealm({super.key, required this.searchString});
+  const TestRealm({
+    super.key,
+    required this.searchString,
+    required this.onSelectedOTPCode
+    });
 
   final String searchString;
+  final Function(OTP) onSelectedOTPCode;
 
   @override
   State<TestRealm> createState() => _TestRealmState();
@@ -71,7 +76,10 @@ class _TestRealmState extends State<TestRealm> {
                 height: 16,
               ),
               for (var otpcode in filteredCodes()) ...[
-                OTPCodeBlock(otpcode: otpcode),
+                OTPCodeBlock(
+                    otpcode: otpcode,
+                    onSelectedOTPCode: widget.onSelectedOTPCode
+                    ),
                 const SizedBox(
                   height: 4.0,
                 ),

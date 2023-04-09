@@ -4,11 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:otp/otp.dart' as pl_lotp;
 import 'package:flutter/services.dart';
+import 'package:realm/realm.dart';
 
 class OTPCodeBlock extends StatefulWidget {
-  const OTPCodeBlock({super.key, required this.otpcode});
+  const OTPCodeBlock({
+    super.key,
+    required this.otpcode,
+    required this.onSelectedOTPCode
+  });
 
   final OTP otpcode;
+  final Function(OTP) onSelectedOTPCode;
 
   @override
   State<OTPCodeBlock> createState() => _OTPCodeBlockState();
@@ -54,8 +60,17 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
       onTap: () async {
         if (sOTPCode != null) {
           await Clipboard.setData(ClipboardData(text: sOTPCode));
+          //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          //   content: Text("Copied"),
+          // ));
         }
       },
+      onLongPressStart: ((details) {
+        print(details);
+        // callback();
+
+        widget.onSelectedOTPCode(widget.otpcode);
+      }),
       child: Container(
         margin: const EdgeInsets.all(8.0),
         // color: customColors!.background,
