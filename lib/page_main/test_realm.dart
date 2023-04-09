@@ -44,29 +44,6 @@ class _TestRealmState extends State<TestRealm> {
     return filteredList;
   }
 
-  void addTestDataToRealm() {
-    gRealm.write(() {
-      gRealm.addAll([
-        Person(ObjectId(), 'Figrin D\'an'),
-        Person(ObjectId(), 'Greedo'),
-        Person(ObjectId(), 'Toro')
-      ]);
-    });
-  }
-
-  void readTestDataToRealm() {
-    final people = gRealm.all<Person>();
-    for (var i = 0; i < people.length; ++i) {
-      debugPrint(people[i].name);
-    }
-
-    final otp = gRealm.all<OTP>();
-    for (var i = 0; i < otp.length; ++i) {
-      debugPrint(otp[i].title);
-      // pGenerateOTPCode(otp[i]);
-    }
-  }
-
 // For testing purposes
   void pGenerateOTPCode(otp) {
     debugPrint(otp);
@@ -101,8 +78,6 @@ class _TestRealmState extends State<TestRealm> {
               ],
             ],
           ),
-          TextButton(onPressed: () => {addTestDataToRealm()}, child: const Text("Test Data")),
-          TextButton(onPressed: () => {readTestDataToRealm()}, child: const Text("Read Data"))
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:aspis/page_manual_entry/IconSelector.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aspis/global_realm.dart';
@@ -148,11 +149,23 @@ class _PageManualEntryState extends State<PageManualEntry> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+
+                    Container(
+                        height: 160,
+                  child: IconSelector(
+
+                  ),
+                  ),
+
+                  const Divider(
+                    color: Colors.white,
+                  ),
+
                   Row(
                     children: <Widget>[
                       const Icon(
                         Icons.person,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                       Expanded(
                         child: FlatTextField(
@@ -163,13 +176,13 @@ class _PageManualEntryState extends State<PageManualEntry> {
                     ],
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 8,
                   ),
                   Row(
                     children: <Widget>[
                       const Icon(
                         Icons.key,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                       Expanded(
                         child: FlatTextField(
@@ -181,13 +194,14 @@ class _PageManualEntryState extends State<PageManualEntry> {
                     ],
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 8,
                   ),
                   Row(
                     children: [
                       const SizedBox(
                         width: 24.0,
                       ),
+
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,36 +213,38 @@ class _PageManualEntryState extends State<PageManualEntry> {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        width: 16.0,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            FlatDropdown(
-                              value: groupValue,
-                              labelText: "Group",
-                              onValueChanged: (String? valueArg) {
-                                setState(() {
-                                  groupValue = valueArg!;
-                                });
-                              },
-                              items: const ["No Group", "fdsa", "qwer"],
-                            )
-                          ],
-                        ),
-                      ),
+
+                      //   const SizedBox(
+                      //     width: 16.0,
+                      //   ),
+
+                      //   Expanded(
+                      //     child: Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: <Widget>[
+                      //         FlatDropdown(
+                      //           value: groupValue,
+                      //           labelText: "Group",
+                      //           onValueChanged: (String? valueArg) {
+                      //             setState(() {
+                      //               groupValue = valueArg!;
+                      //             });
+                      //           },
+                      //           items: const ["No Group", "fdsa", "qwer"],
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
                     ],
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 8,
                   ),
                   Row(
                     children: <Widget>[
                       const Icon(
                         Icons.sort,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                       Expanded(
                         child: FlatTextField(
@@ -239,11 +255,11 @@ class _PageManualEntryState extends State<PageManualEntry> {
                     ],
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 8,
                   ),
                   ExpandablePanel(
                     header: const Padding(
-                      padding: EdgeInsets.only(left: 24.0, top: 10),
+                      padding: EdgeInsets.only(left: 24.0, top: 8),
                       child: Text(
                         "Advanced",
                         textAlign: TextAlign.left,
@@ -255,7 +271,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                         children: <Widget>[
                           const Icon(
                             Icons.info,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                           Expanded(
                             child: Column(
@@ -269,7 +285,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                                       typeValue = valueArg!;
                                     });
                                   },
-                                  items: const ["TOTP", "HOTP", "Stream", "Yandex", "MOTP"],
+                                  items: const ["TOTP", "HOTP"], // , "Stream", "Yandex", "MOTP"],
                                 )
                               ],
                             ),
@@ -297,7 +313,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                         ],
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 8,
                       ),
                       Row(
                         children: <Widget>[
@@ -322,7 +338,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                         ],
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 8,
                       ),
                       Row(
                         children: [
@@ -339,7 +355,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
                         ],
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 8,
                       ),
                     ]),
                   ),
