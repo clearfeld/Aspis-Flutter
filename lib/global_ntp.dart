@@ -27,15 +27,6 @@ Future<void> gGetNTPTime() async {
 }
 
 
-final refreshProvider = StateNotifierProvider<Refresh, bool>((ref) {
-  return Refresh(ref);
+final refreshProvider = StateProvider<bool>((ref) {
+  return false;
 });
-
-class Refresh extends StateNotifier<bool> {
-  Refresh(this.ref): super(false);
-
-  final Ref ref;
-
-  void toggle() {
-  }
-}

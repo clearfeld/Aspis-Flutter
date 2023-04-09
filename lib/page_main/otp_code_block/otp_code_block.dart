@@ -1,24 +1,26 @@
 import 'dart:async';
 
+import 'package:aspis/global_ntp.dart';
 import 'package:aspis/store/test.dart';
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:otp/otp.dart' as pl_lotp;
 import 'package:flutter/services.dart';
 import 'package:realm/realm.dart';
 
-class OTPCodeBlock extends StatefulWidget {
+class OTPCodeBlock extends ConsumerStatefulWidget {
   const OTPCodeBlock({super.key, required this.otpcode, required this.onSelectedOTPCode});
 
   final OTP otpcode;
   final Function(OTP) onSelectedOTPCode;
 
   @override
-  State<OTPCodeBlock> createState() => _OTPCodeBlockState();
+  ConsumerState<OTPCodeBlock> createState() => _OTPCodeBlockState();
 }
 
-class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMixin {
+class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
   String? sOTPCode;
   AnimationController? controller;
   Timer? periodicTimer;
@@ -29,10 +31,10 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
 
     pGenerateOTPCode(widget.otpcode);
     // OTPCodes = gRealm.all<OTP>();
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    );
+    // controller = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 5),
+    // );
     // print(OTPCodes);
 
     // periodicTimer =
@@ -66,6 +68,11 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
+
+    final refresh = ref.watch(refreshProvider);
+    if (refresh) {
+      pGenerateOTPCode(widget.otpcode);
+    }
 
     return GestureDetector(
       onTap: () async {

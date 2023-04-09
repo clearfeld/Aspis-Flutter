@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:aspis/global_ntp.dart';
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RefreshTimer extends StatefulWidget {
+class RefreshTimer extends ConsumerStatefulWidget {
   const RefreshTimer({
     super.key,
     // required this.otpcode, required this.onSelectedOTPCode
@@ -14,10 +15,10 @@ class RefreshTimer extends StatefulWidget {
 //   final Function(OTP) onSelectedOTPCode;
 
   @override
-  State<RefreshTimer> createState() => _RefreshTimerState();
+  ConsumerState<RefreshTimer> createState() => _RefreshTimerState();
 }
 
-class _RefreshTimerState extends State<RefreshTimer> with TickerProviderStateMixin {
+class _RefreshTimerState extends ConsumerState<RefreshTimer> with TickerProviderStateMixin {
   Timer? periodicTimer;
   double elapse = 0.0;
   double normalized = 1.0;
@@ -36,6 +37,8 @@ class _RefreshTimerState extends State<RefreshTimer> with TickerProviderStateMix
           elapse = 0.0;
           normalized = 1.0;
         });
+
+        ref.read(refreshProvider.notifier).state = !ref.read(refreshProvider.notifier).state;
       } else {
         setState(() {
           elapse = elapse + 1.0;
@@ -47,6 +50,8 @@ class _RefreshTimerState extends State<RefreshTimer> with TickerProviderStateMix
                 0.0,
                 100.0,
               ) / 100);
+
+              ref.read(refreshProvider.notifier).state = false;
         });
 
         // debugPrint(normalized);
