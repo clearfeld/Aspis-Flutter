@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aspis/store/test.dart';
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:realm/realm.dart';
 
 class OTPCodeBlock extends StatefulWidget {
-  const OTPCodeBlock({
-    super.key,
-    required this.otpcode,
-    required this.onSelectedOTPCode
-  });
+  const OTPCodeBlock({super.key, required this.otpcode, required this.onSelectedOTPCode});
 
   final OTP otpcode;
   final Function(OTP) onSelectedOTPCode;
@@ -23,6 +21,7 @@ class OTPCodeBlock extends StatefulWidget {
 class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMixin {
   String? sOTPCode;
   AnimationController? controller;
+  Timer? periodicTimer;
 
   @override
   void initState() {
@@ -35,18 +34,30 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
       duration: const Duration(seconds: 5),
     );
     // print(OTPCodes);
+
+    // periodicTimer =
+    //     Timer.periodic(const Duration(seconds: 30), (Timer t) => pGenerateOTPCode(widget.otpcode));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    periodicTimer?.cancel();
   }
 
   void pGenerateOTPCode(otp) {
-    debugPrint(otp.toString());
-    debugPrint(otp.secret);
+    // debugPrint(otp.toString());
+    // debugPrint(otp.secret);
 
     try {
       final code = pl_lotp.OTP.generateTOTPCodeString(
           otp.secret, DateTime.now().millisecondsSinceEpoch,
           length: 6, interval: 30, algorithm: pl_lotp.Algorithm.SHA1, isGoogle: true);
-      debugPrint(code);
-      sOTPCode = code;
+      // debugPrint(code);
+
+      setState(() {
+        sOTPCode = code;
+      });
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -120,7 +131,7 @@ class _OTPCodeBlockState extends State<OTPCodeBlock> with TickerProviderStateMix
                     ],
                   ),
                 ),
-                const Text("Counter"),
+                // const Text("Counter"),
               ],
             ),
           ],

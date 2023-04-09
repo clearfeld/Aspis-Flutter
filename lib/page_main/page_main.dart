@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:aspis/global_realm.dart';
+import 'package:aspis/page_main/refresh_timer.dart';
 import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
 
@@ -34,8 +37,6 @@ class _PageMainState extends State<PageMain> {
   }
 
   void selectOTPCode(arg) {
-    print("here");
-
     setState(() {
       selectedOTP = arg;
       appbarState = EAppbarState.selected;
@@ -72,10 +73,10 @@ class _PageMainState extends State<PageMain> {
 
   void _moreOptionSelected_Selected(int item) {
     if (item == 0) {
-      if(selectedOTP != null) {
+      if (selectedOTP != null) {
         // print(selectedOTP);
         gRealm.write(() {
-            gRealm.delete<OTP>(selectedOTP);
+          gRealm.delete<OTP>(selectedOTP);
         });
 
         setState(() {
@@ -242,12 +243,26 @@ class _PageMainState extends State<PageMain> {
 
     return Scaffold(
       appBar: vappBar,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            TestRealm(searchString: searchTextController.text, onSelectedOTPCode: selectOTPCode),
-          ],
-        ),
+      body: Column(
+        children: [
+
+          Row(
+            children: const <Widget>[
+              RefreshTimer(),
+            ],
+          ),
+
+          Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TestRealm(
+                      searchString: searchTextController.text, onSelectedOTPCode: selectOTPCode),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FabButton(),
     );

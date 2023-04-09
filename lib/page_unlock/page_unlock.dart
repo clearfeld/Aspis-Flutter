@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aspis/global_ntp.dart';
 import 'package:aspis/global_realm.dart';
 import 'package:aspis/components/flat_textfield.dart';
 import 'package:aspis/store/test.dart';
@@ -20,6 +21,12 @@ class _PageUnlockState extends State<PageUnlock> {
   final passwordTextController = TextEditingController();
 
   String errorMsg = "";
+
+  @override
+  void initState() {
+    super.initState();
+    gGetNTPTime();
+  }
 
   @override
   void dispose() {
