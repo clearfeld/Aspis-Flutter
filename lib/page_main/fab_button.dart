@@ -64,7 +64,7 @@ class FabButton extends StatelessWidget {
                           );
                         }),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 8.0,
                     ),
 
@@ -87,7 +87,7 @@ class FabButton extends StatelessWidget {
                       ),
                     ],
 
-                    SizedBox(
+                    const SizedBox(
                       height: 8.0,
                     ),
 

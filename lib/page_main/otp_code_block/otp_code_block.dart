@@ -8,13 +8,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:otp/otp.dart' as pl_lotp;
 import 'package:flutter/services.dart';
-import 'package:realm/realm.dart';
+// import 'package:realm/realm.dart';
 
 class OTPCodeBlock extends ConsumerStatefulWidget {
-  const OTPCodeBlock({super.key, required this.otpcode, required this.onSelectedOTPCode});
+  const OTPCodeBlock(
+      {super.key,
+      required this.otpcode,
+      required this.onSelectedOTPCode,
+      required this.selectedOTP});
 
   final OTP otpcode;
   final Function(OTP) onSelectedOTPCode;
+
+  // TODO(clearfeld): do a smarter highlight
+  final OTP? selectedOTP;
 
   @override
   ConsumerState<OTPCodeBlock> createState() => _OTPCodeBlockState();
@@ -69,6 +76,11 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
 
+    var isSelected = BoxShadow(color: customColors?.background ?? Colors.red, spreadRadius: 4);
+    if (widget.otpcode.id == widget.selectedOTP?.id) {
+      isSelected = const BoxShadow(color: Colors.blue, spreadRadius: 4);
+    }
+
     final refresh = ref.watch(refreshProvider);
     if (refresh) {
       pGenerateOTPCode(widget.otpcode);
@@ -84,7 +96,7 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
         }
       },
       onLongPressStart: ((details) {
-        print(details);
+        // debugPrint(details);
         // callback();
 
         widget.onSelectedOTPCode(widget.otpcode);
@@ -97,7 +109,8 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
           borderRadius: BorderRadius.circular(10),
           color: customColors!.background,
           boxShadow: [
-            BoxShadow(color: customColors.background ?? Colors.red, spreadRadius: 4),
+            isSelected
+            // BoxShadow(color: customColors.background ?? Colors.red, spreadRadius: 4),
           ],
         ),
         child: Column(
@@ -111,8 +124,7 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
                   padding: const EdgeInsets.all(16.0),
                   child: SvgPicture.asset(
                       widget.otpcode.iconValue ?? "assets/aegis_icons/icons/3_Generic/User.svg",
-                      semanticsLabel: 'Acme Logo'
-                    ),
+                      semanticsLabel: 'Acme Logo'),
                 ),
                 Expanded(
                   child: Column(

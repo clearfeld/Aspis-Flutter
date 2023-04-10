@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:aspis/global_realm.dart';
 import 'package:aspis/page_main/otp_code_block/otp_code_block.dart';
 import 'package:aspis/page_main/refresh_timer.dart';
 import 'package:aspis/page_manual_entry/page_manual_entry.dart';
+import 'package:aspis/singleton_otp_entry.dart';
 import 'package:aspis/store/test.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +10,7 @@ import 'package:aspis/page_main/fab_button.dart';
 
 import 'package:aspis/page_settings/page_settings.dart';
 import 'package:aspis/page_about/page_about.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:realm/realm.dart';
 
@@ -20,27 +20,33 @@ enum EAppbarState {
   selected,
 }
 
-class PageMain extends StatefulWidget {
+class PageMain extends ConsumerStatefulWidget {
   const PageMain({super.key});
 
   @override
-  State<PageMain> createState() => _PageMainState();
+  ConsumerState<PageMain> createState() => _PageMainState();
 }
 
-class _PageMainState extends State<PageMain> {
+class _PageMainState extends ConsumerState<PageMain> {
   final searchTextController = TextEditingController();
   EAppbarState appbarState = EAppbarState.none;
   var selectedOTP = null;
 
-  RealmResults<OTP>? pOTPCodes;
+  // RealmResults<OTP>? pOTPCodes;
 
   @override
   void initState() {
     super.initState();
 
-    pOTPCodes = gRealm.all<OTP>();
+    var pOTPCodes = gRealm.all<OTP>();
 
-    // debugPrint(pOTPCodes.toString());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.watch(OTPManagerProvider.notifier).setOTPList(pOTPCodes);
+
+      setState(() {});
+      //   final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+      //   authViewModel.getToken();
+    });
   }
 
   @override
@@ -49,20 +55,20 @@ class _PageMainState extends State<PageMain> {
     searchTextController.dispose();
   }
 
-  List<OTP> filteredCodes() {
-    List<OTP> filteredList = [];
-    if (pOTPCodes != null) {
-      var searchText = searchTextController.text.toLowerCase();
-      for (var otpCode in pOTPCodes!) {
-        if (otpCode.title.toLowerCase().contains(searchText) ||
-            otpCode.issuer!.toLowerCase().contains(searchText) ||
-            searchText == '') {
-          filteredList.add(otpCode);
-        }
-      }
-    }
-    return filteredList;
-  }
+//   List<OTP> filteredCodes() {
+//     List<OTP> filteredList = [];
+//     if (pOTPCodes != null) {
+//       var searchText = searchTextController.text.toLowerCase();
+//       for (var otpCode in pOTPCodes!) {
+//         if (otpCode.title.toLowerCase().contains(searchText) ||
+//             otpCode.issuer!.toLowerCase().contains(searchText) ||
+//             searchText == '') {
+//           filteredList.add(otpCode);
+//         }
+//       }
+//     }
+//     return filteredList;
+//   }
 
   void selectOTPCode(arg) {
     setState(() {
@@ -130,6 +136,9 @@ class _PageMainState extends State<PageMain> {
 
   @override
   Widget build(BuildContext context) {
+    RealmResults<OTP>? pOTPCodes = ref.watch(OTPManagerProvider); // .notifier).state;
+    // print(pOTPCodes);
+
     AppBar vappBar;
     if (appbarState == EAppbarState.search) {
       vappBar = AppBar(
@@ -176,6 +185,7 @@ class _PageMainState extends State<PageMain> {
           onPressed: () => {
             setState(() {
               appbarState = EAppbarState.none;
+              selectedOTP = null;
             })
           },
           icon: const Icon(Icons.arrow_back),
@@ -292,11 +302,13 @@ class _PageMainState extends State<PageMain> {
               RefreshTimer(),
             ],
           ),
-          SizedBox(
+
+          const SizedBox(
             height: 4.0,
           ),
+
           Expanded(
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -308,12 +320,17 @@ class _PageMainState extends State<PageMain> {
                     //   const SizedBox(
                     //     height: 16,
                     //   ),
-                    for (var otpcode in filteredCodes()) ...[
-                      OTPCodeBlock(otpcode: otpcode, onSelectedOTPCode: selectOTPCode),
-                      // const SizedBox(
-                      //   height: 4.0,
-                      // ),
-                    ],
+                    if (pOTPCodes != null)
+                      for (var otpcode in pOTPCodes) ...[
+                        /// filteredCodes()) ...[
+                        OTPCodeBlock(
+                            otpcode: otpcode,
+                            onSelectedOTPCode: selectOTPCode,
+                            selectedOTP: selectedOTP),
+                        // const SizedBox(
+                        //   height: 4.0,
+                        // ),
+                      ],
                   ],
                 ),
               ),

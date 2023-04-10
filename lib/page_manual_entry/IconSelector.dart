@@ -6,12 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class IconSelector extends StatefulWidget {
-  const IconSelector({
-    super.key,
-    required this.setIconInformation,
-    required this.iconType,
-    this.iconValue
-  });
+  const IconSelector(
+      {super.key, required this.setIconInformation, required this.iconType, this.iconValue});
 
   final Function(String, String) setIconInformation;
 
@@ -33,10 +29,11 @@ class _IconSelectorState extends State<IconSelector> {
 
     searchTextController.text = "";
 
-    if (widget.iconType == "icon" && widget.iconValue != null)
+    if (widget.iconType == "icon" && widget.iconValue != null) {
       setState(() {
         currentIcon = (widget.iconValue as String);
       });
+    }
 
     _initImages();
   }
@@ -117,10 +114,7 @@ class _IconSelectorState extends State<IconSelector> {
                                       currentIcon = someImages[index];
                                     });
 
-                                    widget.setIconInformation(
-                                        "icon",
-                                        someImages[index]
-                                    );
+                                    widget.setIconInformation("icon", someImages[index]);
                                   },
                                 ),
                               );

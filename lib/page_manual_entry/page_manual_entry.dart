@@ -2,6 +2,7 @@ import 'package:aspis/page_manual_entry/IconSelector.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aspis/global_realm.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
 import 'package:aspis/store/test.dart';
 import 'package:aspis/components/flat_textfield.dart';
@@ -10,16 +11,16 @@ import 'package:aspis/components/flat_dropdown.dart';
 import 'package:expandable/expandable.dart';
 import 'package:aspis/singleton_otp_entry.dart';
 
-class PageManualEntry extends StatefulWidget {
+class PageManualEntry extends ConsumerStatefulWidget {
   const PageManualEntry({super.key, this.fOTPCode});
 
   final OTP? fOTPCode;
 
   @override
-  State<PageManualEntry> createState() => _PageManualEntryState();
+  ConsumerState<PageManualEntry> createState() => _PageManualEntryState();
 }
 
-class _PageManualEntryState extends State<PageManualEntry> {
+class _PageManualEntryState extends ConsumerState<PageManualEntry> {
   final titleTextController = TextEditingController();
   final secretTextController = TextEditingController();
 
@@ -97,66 +98,71 @@ class _PageManualEntryState extends State<PageManualEntry> {
     iconValue = value;
   }
 
-  void _moreOptionSelected(int item) {
-    if (item == 0) {
-      //Navigator.push(
-      //  context,
-      //  PageRouteBuilder(
-      //    pageBuilder:
-      //        (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
-      //      return const PageAbout();
-      //    },
-      //    transitionDuration: Duration.zero,
-      //    reverseTransitionDuration: Duration.zero,
-      //  ),
-      //);
-    } else if (item == 1) {}
-  }
+//   void _moreOptionSelected(int item) {
+//     if (item == 0) {
+//       //Navigator.push(
+//       //  context,
+//       //  PageRouteBuilder(
+//       //    pageBuilder:
+//       //        (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
+//       //      return const PageAbout();
+//       //    },
+//       //    transitionDuration: Duration.zero,
+//       //    reverseTransitionDuration: Duration.zero,
+//       //  ),
+//       //);
+//     } else if (item == 1) {}
+//   }
 
   void pSaveEntry() {
     if (widget.fOTPCode == null) {
+      var o = OTP(
+          ObjectId(),
+          titleTextController.text,
+          secretTextController.text,
+          issuer: issuerTextController.text,
+          group: groupValue,
+          notes: notesTextController.text,
+          iconType,
+          iconValue: iconValue,
+          typeValue,
+          hashValue,
+          int.parse(periodTextController.text),
+          int.parse(digitsTextController.text),
+          int.parse(usageTextController.text));
+
       gRealm.write(() {
-        gRealm.addAll([
-          OTP(
-              ObjectId(),
-              titleTextController.text,
-              secretTextController.text,
-              issuer: issuerTextController.text,
-              group: groupValue,
-              notes: notesTextController.text,
-              iconType,
-              iconValue: iconValue,
-              typeValue,
-              hashValue,
-              int.parse(periodTextController.text),
-              int.parse(digitsTextController.text),
-              int.parse(usageTextController.text))
-        ]);
+        gRealm.addAll([o]);
       });
+
+      // TODO(clearfeld): clean this disgusting
+      ref.watch(OTPManagerProvider.notifier).setOTPList(gRealm.all<OTP>());
     } else {
       if (widget.fOTPCode != null) {
+        var o = OTP(
+            (widget.fOTPCode?.id as ObjectId),
+            titleTextController.text,
+            secretTextController.text,
+            issuer: issuerTextController.text,
+            group: groupValue,
+            notes: notesTextController.text,
+            iconType,
+            iconValue: iconValue,
+            typeValue,
+            hashValue,
+            int.parse(periodTextController.text),
+            int.parse(digitsTextController.text),
+            int.parse(usageTextController.text));
+
         gRealm.write(() {
-          gRealm.add<OTP>(
-              OTP(
-                  (widget.fOTPCode?.id as ObjectId),
-                  titleTextController.text,
-                  secretTextController.text,
-                  issuer: issuerTextController.text,
-                  group: groupValue,
-                  notes: notesTextController.text,
-                  iconType,
-                  iconValue: iconValue,
-                  typeValue,
-                  hashValue,
-                  int.parse(periodTextController.text),
-                  int.parse(digitsTextController.text),
-                  int.parse(usageTextController.text)),
-              update: true);
+          gRealm.add<OTP>(o, update: true);
         });
+
+        ref.watch(OTPManagerProvider.notifier).setOTPList(gRealm.all<OTP>());
       }
     }
 
-    Navigator.pop(context);
+    Navigator.pop(context, "refresh");
   }
 
   @override
@@ -171,7 +177,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
               onPressed: () => {pSaveEntry()},
               child: const Text("Save",
                   style: TextStyle(
-                    color: const Color(0xFFFCFCFC),
+                    color: Color(0xFFFCFCFC),
                   ))),
           //   PopupMenuButton(
           //     icon: const Icon(
@@ -205,13 +211,12 @@ class _PageManualEntryState extends State<PageManualEntry> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     height: 160,
                     child: IconSelector(
                         setIconInformation: setIconInformation,
                         iconType: iconType,
-                        iconValue: iconValue
-                    ),
+                        iconValue: iconValue),
                   ),
                   const Divider(
                     color: Colors.white,
