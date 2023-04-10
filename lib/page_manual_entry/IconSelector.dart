@@ -2,19 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:aspis/global_realm.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:realm/realm.dart';
-import 'package:aspis/store/test.dart';
-import 'package:aspis/components/flat_textfield.dart';
-
-import 'package:aspis/components/flat_dropdown.dart';
-import 'package:expandable/expandable.dart';
-import 'package:aspis/singleton_otp_entry.dart';
 
 class IconSelector extends StatefulWidget {
-  const IconSelector({super.key});
+  const IconSelector({
+    super.key,
+    required this.setIconInformation,
+    required this.iconType,
+    this.iconValue
+  });
+
+  final Function(String, String) setIconInformation;
+
+  final String iconType;
+  final String? iconValue;
 
   @override
   State<IconSelector> createState() => _IconSelectorState();
@@ -23,12 +25,26 @@ class IconSelector extends StatefulWidget {
 class _IconSelectorState extends State<IconSelector> {
   final searchTextController = TextEditingController();
   var someImages;
-  var currentIcon = "assets/aegis_icons/icons/1_Primary/Allegro.svg";
+  var currentIcon = "assets/aegis_icons/icons/3_Generic/User.svg";
+
+  @override
+  void initState() {
+    super.initState();
+
+    searchTextController.text = "";
+
+    if (widget.iconType == "icon" && widget.iconValue != null)
+      setState(() {
+        currentIcon = (widget.iconValue as String);
+      });
+
+    _initImages();
+  }
 
   Future _initImages() async {
     // >> To get paths you need these 2 lines
     final manifestContent = await rootBundle.loadString('AssetManifest.json');
-    print(manifestContent);
+    // debugPrint(manifestContent);
 
     final Map<String, dynamic> manifestMap = json.decode(manifestContent);
     // >> To get paths you need these 2 lines
@@ -38,21 +54,12 @@ class _IconSelectorState extends State<IconSelector> {
         .where((String key) => key.contains('.svg'))
         .toList();
 
-    print(imagePaths);
+    // debugPrint(imagePaths);
 
 // someImages = imagePaths;
     setState(() {
       someImages = imagePaths;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    searchTextController.text = "";
-
-    _initImages();
   }
 
   @override
@@ -105,11 +112,15 @@ class _IconSelectorState extends State<IconSelector> {
                                     child: SvgPicture.asset(someImages[index],
                                         semanticsLabel: someImages[index]),
                                   ),
-
                                   onTap: () {
                                     setState(() {
                                       currentIcon = someImages[index];
                                     });
+
+                                    widget.setIconInformation(
+                                        "icon",
+                                        someImages[index]
+                                    );
                                   },
                                 ),
                               );
@@ -123,14 +134,12 @@ class _IconSelectorState extends State<IconSelector> {
               },
             );
           },
-
           child: Container(
             width: 88.0,
             height: 88.0,
             padding: const EdgeInsets.all(16.0),
             child: SvgPicture.asset(currentIcon, semanticsLabel: currentIcon),
           ),
-
         ),
       ]),
     );

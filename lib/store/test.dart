@@ -26,6 +26,10 @@ class _OTP {
 
   late String? notes;
 
+  // TODO(clearfeld): make these enums when realm supports it
+  late String iconType; // text or icon
+  late String? iconValue; // null or path to icon
+
   late String type;
   late String hashFunc;
 

@@ -15,6 +15,14 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Realm
+
+Must run the following command, when new realm models are added or modified.
+
+```bash
+flutter pub run realm generate
+```
+
 ## i18n
 
 Must run the following command, when new translations are added.

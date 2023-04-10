@@ -109,8 +109,10 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
                   width: 88.0,
                   height: 88.0,
                   padding: const EdgeInsets.all(16.0),
-                  child: SvgPicture.asset("assets/aegis_icons/icons/1_Primary/Allegro.svg",
-                      semanticsLabel: 'Acme Logo'),
+                  child: SvgPicture.asset(
+                      widget.otpcode.iconValue ?? "assets/aegis_icons/icons/3_Generic/User.svg",
+                      semanticsLabel: 'Acme Logo'
+                    ),
                 ),
                 Expanded(
                   child: Column(

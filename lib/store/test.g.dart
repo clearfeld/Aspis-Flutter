@@ -50,6 +50,7 @@ class OTP extends _OTP with RealmEntity, RealmObjectBase, RealmObject {
     ObjectId id,
     String title,
     String secret,
+    String iconType,
     String type,
     String hashFunc,
     int period,
@@ -58,6 +59,7 @@ class OTP extends _OTP with RealmEntity, RealmObjectBase, RealmObject {
     String? issuer,
     String? group,
     String? notes,
+    String? iconValue,
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'title', title);
@@ -65,6 +67,8 @@ class OTP extends _OTP with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'issuer', issuer);
     RealmObjectBase.set(this, 'group', group);
     RealmObjectBase.set(this, 'notes', notes);
+    RealmObjectBase.set(this, 'iconType', iconType);
+    RealmObjectBase.set(this, 'iconValue', iconValue);
     RealmObjectBase.set(this, 'type', type);
     RealmObjectBase.set(this, 'hashFunc', hashFunc);
     RealmObjectBase.set(this, 'period', period);
@@ -103,6 +107,18 @@ class OTP extends _OTP with RealmEntity, RealmObjectBase, RealmObject {
   String? get notes => RealmObjectBase.get<String>(this, 'notes') as String?;
   @override
   set notes(String? value) => RealmObjectBase.set(this, 'notes', value);
+
+  @override
+  String get iconType =>
+      RealmObjectBase.get<String>(this, 'iconType') as String;
+  @override
+  set iconType(String value) => RealmObjectBase.set(this, 'iconType', value);
+
+  @override
+  String? get iconValue =>
+      RealmObjectBase.get<String>(this, 'iconValue') as String?;
+  @override
+  set iconValue(String? value) => RealmObjectBase.set(this, 'iconValue', value);
 
   @override
   String get type => RealmObjectBase.get<String>(this, 'type') as String;
@@ -148,6 +164,8 @@ class OTP extends _OTP with RealmEntity, RealmObjectBase, RealmObject {
       SchemaProperty('issuer', RealmPropertyType.string, optional: true),
       SchemaProperty('group', RealmPropertyType.string, optional: true),
       SchemaProperty('notes', RealmPropertyType.string, optional: true),
+      SchemaProperty('iconType', RealmPropertyType.string),
+      SchemaProperty('iconValue', RealmPropertyType.string, optional: true),
       SchemaProperty('type', RealmPropertyType.string),
       SchemaProperty('hashFunc', RealmPropertyType.string),
       SchemaProperty('period', RealmPropertyType.int),

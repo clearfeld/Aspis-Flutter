@@ -33,6 +33,9 @@ class _PageManualEntryState extends State<PageManualEntry> {
 
   final usageTextController = TextEditingController();
 
+  String iconType = "text";
+  String? iconValue;
+
   String groupValue = "";
   String typeValue = "TOTP";
   String hashValue = "SHA1";
@@ -59,6 +62,8 @@ class _PageManualEntryState extends State<PageManualEntry> {
       periodTextController.text = widget.fOTPCode?.period.toString() ?? "30";
       digitsTextController.text = widget.fOTPCode?.digits.toString() ?? "6";
       usageTextController.text = widget.fOTPCode?.usageCount.toString() ?? "0";
+      iconType = widget.fOTPCode?.iconType ?? "text";
+      iconValue = widget.fOTPCode?.iconValue;
       groupValue = "No Group";
       typeValue = widget.fOTPCode?.type.toUpperCase() ?? "TOTP";
       hashValue = widget.fOTPCode?.hashFunc ?? "SHA1";
@@ -85,6 +90,11 @@ class _PageManualEntryState extends State<PageManualEntry> {
     digitsTextController.dispose();
     usageTextController.dispose();
     super.dispose();
+  }
+
+  void setIconInformation(type, value) {
+    iconType = type;
+    iconValue = value;
   }
 
   void _moreOptionSelected(int item) {
@@ -114,6 +124,8 @@ class _PageManualEntryState extends State<PageManualEntry> {
               issuer: issuerTextController.text,
               group: groupValue,
               notes: notesTextController.text,
+              iconType,
+              iconValue: iconValue,
               typeValue,
               hashValue,
               int.parse(periodTextController.text),
@@ -125,20 +137,21 @@ class _PageManualEntryState extends State<PageManualEntry> {
       if (widget.fOTPCode != null) {
         gRealm.write(() {
           gRealm.add<OTP>(
-            OTP(
-              (widget.fOTPCode?.id as ObjectId),
-              titleTextController.text,
-              secretTextController.text,
-              issuer: issuerTextController.text,
-              group: groupValue,
-              notes: notesTextController.text,
-              typeValue,
-              hashValue,
-              int.parse(periodTextController.text),
-              int.parse(digitsTextController.text),
-              int.parse(usageTextController.text)
-           )
-          , update: true);
+              OTP(
+                  (widget.fOTPCode?.id as ObjectId),
+                  titleTextController.text,
+                  secretTextController.text,
+                  issuer: issuerTextController.text,
+                  group: groupValue,
+                  notes: notesTextController.text,
+                  iconType,
+                  iconValue: iconValue,
+                  typeValue,
+                  hashValue,
+                  int.parse(periodTextController.text),
+                  int.parse(digitsTextController.text),
+                  int.parse(usageTextController.text)),
+              update: true);
         });
       }
     }
@@ -192,7 +205,11 @@ class _PageManualEntryState extends State<PageManualEntry> {
                 children: <Widget>[
                   Container(
                     height: 160,
-                    child: IconSelector(),
+                    child: IconSelector(
+                        setIconInformation: setIconInformation,
+                        iconType: iconType,
+                        iconValue: iconValue
+                    ),
                   ),
                   const Divider(
                     color: Colors.white,
