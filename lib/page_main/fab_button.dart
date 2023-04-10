@@ -64,7 +64,9 @@ class FabButton extends StatelessWidget {
                           );
                         }),
 
-                        SizedBox(height: 8.0,),
+                    SizedBox(
+                      height: 8.0,
+                    ),
 
                     if (isMobile) ...[
                       ElevatedButton(
@@ -85,7 +87,9 @@ class FabButton extends StatelessWidget {
                       ),
                     ],
 
-                    SizedBox(height: 8.0,),
+                    SizedBox(
+                      height: 8.0,
+                    ),
 
                     ElevatedButton(
                       child: const Text('Close BottomSheet'),

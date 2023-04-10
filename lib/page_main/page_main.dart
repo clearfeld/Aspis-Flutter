@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aspis/global_realm.dart';
+import 'package:aspis/page_main/otp_code_block/otp_code_block.dart';
 import 'package:aspis/page_main/refresh_timer.dart';
 import 'package:aspis/page_manual_entry/page_manual_entry.dart';
 import 'package:aspis/store/test.dart';
@@ -11,7 +12,7 @@ import 'package:aspis/page_main/fab_button.dart';
 import 'package:aspis/page_settings/page_settings.dart';
 import 'package:aspis/page_about/page_about.dart';
 
-import 'package:aspis/page_main/test_realm.dart';
+import 'package:realm/realm.dart';
 
 enum EAppbarState {
   none,
@@ -31,10 +32,36 @@ class _PageMainState extends State<PageMain> {
   EAppbarState appbarState = EAppbarState.none;
   var selectedOTP = null;
 
+  RealmResults<OTP>? pOTPCodes;
+
+  @override
+  void initState() {
+    super.initState();
+
+    pOTPCodes = gRealm.all<OTP>();
+
+    // debugPrint(pOTPCodes.toString());
+  }
+
   @override
   void dispose() {
     super.dispose();
     searchTextController.dispose();
+  }
+
+  List<OTP> filteredCodes() {
+    List<OTP> filteredList = [];
+    if (pOTPCodes != null) {
+      var searchText = searchTextController.text.toLowerCase();
+      for (var otpCode in pOTPCodes!) {
+        if (otpCode.title.toLowerCase().contains(searchText) ||
+            otpCode.issuer!.toLowerCase().contains(searchText) ||
+            searchText == '') {
+          filteredList.add(otpCode);
+        }
+      }
+    }
+    return filteredList;
   }
 
   void selectOTPCode(arg) {
@@ -175,7 +202,7 @@ class _PageMainState extends State<PageMain> {
                   pageBuilder: (BuildContext context, Animation<double> animation1,
                       Animation<double> animation2) {
                     return PageManualEntry(
-                        fOTPCode: selectedOTP,
+                      fOTPCode: selectedOTP,
                     );
                   },
                   transitionDuration: Duration.zero,
@@ -265,13 +292,30 @@ class _PageMainState extends State<PageMain> {
               RefreshTimer(),
             ],
           ),
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestRealm(
-                      searchString: searchTextController.text, onSelectedOTPCode: selectOTPCode),
-                ],
+          SizedBox(
+            height: 4.0,
+          ),
+          Expanded(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: <Widget>[
+                    //   const SizedBox(
+                    //     height: 16,
+                    //   ),
+                    for (var otpcode in filteredCodes()) ...[
+                      OTPCodeBlock(otpcode: otpcode, onSelectedOTPCode: selectOTPCode),
+                      // const SizedBox(
+                      //   height: 4.0,
+                      // ),
+                    ],
+                  ],
+                ),
               ),
             ),
           ),
