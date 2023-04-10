@@ -156,7 +156,7 @@ class _PageManualEntryState extends State<PageManualEntry> {
       }
     }
 
-    // Navigator.canPop(context);
+    Navigator.pop(context);
   }
 
   @override
