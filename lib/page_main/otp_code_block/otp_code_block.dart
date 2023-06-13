@@ -89,7 +89,7 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
     return GestureDetector(
       onTap: () async {
         if (sOTPCode != null) {
-          await Clipboard.setData(ClipboardData(text: sOTPCode));
+          await Clipboard.setData(ClipboardData(text: sOTPCode ?? ""));
           //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           //   content: Text("Copied"),
           // ));
