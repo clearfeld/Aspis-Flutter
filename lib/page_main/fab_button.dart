@@ -110,7 +110,7 @@ class FabButton extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           fixedSize: Size(240, 32),
                         ),
-                      child: const Text('Close BottomSheet', style: TextStyle(color: Colors.white),),
+                      child: const Text('Close', style: TextStyle(color: Colors.white),),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
