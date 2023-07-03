@@ -26,38 +26,38 @@ class PageAbout extends StatelessWidget {
                 "Aspis",
                 style: TextStyle(color: customColors.buttonPrimary, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4.0,
               ),
-              Text(
-                "version 0.0.1",
+              const Text(
+                "Version v0.0.3",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8.0,
               ),
               Divider(
                 color: customColors.border,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8.0,
               ),
               Text(
                 "Developers",
                 style: TextStyle(color: customColors.buttonPrimary, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4.0,
               ),
-              Text(
+              const Text(
                 "@clearfeld",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4.0,
               ),
-              Text(
+              const Text(
                 "@AaronPatterson1",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8.0,
               ),
               Divider(
