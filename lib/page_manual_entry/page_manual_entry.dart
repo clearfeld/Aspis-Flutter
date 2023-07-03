@@ -208,7 +208,7 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 20.0, 8.0),
           child: Center(
             child: SizedBox(
               width: 500,
@@ -226,13 +226,13 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                     color: customColors.border,
                   ),
                   const SizedBox(
-                    height: 32,
+                    height: 24,
                   ),
                   Row(
                     children: <Widget>[
                       Column(
                         children: [
-                          const SizedBox(height: 16,),
+                          const SizedBox(height: 24,),
                           Icon(
                             Icons.person,
                             color: customColors.textColor,
@@ -321,14 +321,16 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                       //   ),
                     ],
                   ),
+
                   const SizedBox(
                     height: 16,
                   ),
+
                   Row(
                     children: <Widget>[
                       Column(
                         children: [
-                          const SizedBox(height: 16,),
+                          const SizedBox(height: 24,),
                           Icon(
                             Icons.note,
                             color: customColors.textColor,
@@ -351,32 +353,43 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                       ),
                     ],
                   ),
+
                   const SizedBox(
-                    height: 16,
+                    height: 24.0,
                   ),
+
                   Divider(
                     color: customColors.border,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 12,
                   ),
                   ExpandablePanel(
-                    header: const Padding(
-                      padding: EdgeInsets.only(left: 4.0),
-                      child: Text(
-                        "Advanced",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 16.0),
+                    header: Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Container(
+                        alignment: Alignment.bottomLeft,
+                        child: const Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 8.0),
+                          child: Text(
+                              "Advanced",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                        ),
                       ),
                     ),
                     theme: ExpandableThemeData(iconColor: customColors.textColor),
                     collapsed: const Column(children: []),
                     expanded: Column(children: [
+
+                        const SizedBox(height: 8,),
+
                       Row(
                         children: <Widget>[
+
                           Column(
                             children: [
-                              const SizedBox(height: 16,),
+                              const SizedBox(height: 24,),
                               Icon(
                                 Icons.key,
                                 color: customColors.textColor,
@@ -407,7 +420,7 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         children: <Widget>[
                           Column(
                             children: [
-                              const SizedBox(height: 16,),
+                              const SizedBox(height: 24,),
                               Icon(
                                 Icons.info,
                                 color: customColors.textColor,
@@ -463,7 +476,7 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         children: <Widget>[
                           Column(
                             children: [
-                              const SizedBox(height: 16,),
+                              const SizedBox(height: 24,),
                               Icon(
                                 Icons.timer,
                                 color: customColors.textColor,
@@ -527,7 +540,7 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         ],
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 32,
                       ),
                     ]),
                   ),
