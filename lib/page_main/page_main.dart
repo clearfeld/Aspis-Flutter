@@ -136,6 +136,14 @@ class _PageMainState extends ConsumerState<PageMain> {
     // }
   }
 
+  Widget? showFab() {
+    if(appbarState != EAppbarState.search) {
+        return FabButton();
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
@@ -376,9 +384,14 @@ class _PageMainState extends ConsumerState<PageMain> {
               ),
             ),
           ),
+
+          SizedBox(
+            height: 16.0
+          )
         ],
       ),
-      floatingActionButton: FabButton(),
+
+      floatingActionButton: showFab(),
     );
   }
 }
