@@ -1,3 +1,4 @@
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 // import 'package:habit_tracker/theme.dart';
 
@@ -31,7 +32,7 @@ class _FlatDropdown extends State<FlatDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    // final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return DecoratedBox(
       decoration: const BoxDecoration(
@@ -45,8 +46,7 @@ class _FlatDropdown extends State<FlatDropdown> {
           //     blurRadius: 5) //blur radius of shadow
           // ]
           ),
-      child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
+      child: Container(
           child: InputDecorator(
             decoration: InputDecoration(
               labelText: widget.labelText,
@@ -55,12 +55,19 @@ class _FlatDropdown extends State<FlatDropdown> {
                 color: Colors.grey,
                 height: 3,
               ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(top: -5),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: customColors.border!, width: 1),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: customColors.border!, width: 1),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              contentPadding: const EdgeInsets.only(top: -5, left: 5, right: 5),
             ),
             child: DropdownButton(
               value: widget.value,
-              icon: const Icon(Icons.arrow_downward),
+              icon: const Icon(Icons.expand_more),
               onChanged: (String? valueArg) {
                 widget.onValueChanged(valueArg);
               },
@@ -71,14 +78,12 @@ class _FlatDropdown extends State<FlatDropdown> {
                 );
               }).toList(),
 
-              // iconEnabledColor: customColors.text_color, //Icon color
-              style: const TextStyle(
-                // color: customColors.text_color, //Font color
-                color: Colors.white,
+              style: TextStyle(
+                color: customColors.textColor,
                 fontSize: 16, //font size on dropdown button
               ),
 
-              dropdownColor: Colors.blueAccent, //dropdown background color
+              dropdownColor: customColors.background, //dropdown background color
               underline: Container(), //remove underline
               isExpanded: true, //make true to make width 100%
             ),

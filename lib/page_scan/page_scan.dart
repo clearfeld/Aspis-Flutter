@@ -171,7 +171,7 @@ class _ScanPageState extends State<ScanPage> {
           PageRouteBuilder(
             pageBuilder:
                 (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
-              return const PageManualEntry();
+              return PageManualEntry();
             },
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,

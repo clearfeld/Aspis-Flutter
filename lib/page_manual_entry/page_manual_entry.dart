@@ -1,4 +1,5 @@
 import 'package:aspis/page_manual_entry/IconSelector.dart';
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aspis/global_realm.dart';
@@ -167,17 +168,20 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Entry"),
+        centerTitle: true,
         elevation: 0,
-        backgroundColor: const Color(0xFF006699),
+        backgroundColor: customColors.navbarBackground,
+        surfaceTintColor: Colors.transparent,
         actions: [
           TextButton(
               onPressed: () => {pSaveEntry()},
-              child: const Text("Save",
+              child: Text("Create",
                   style: TextStyle(
-                    color: Color(0xFFFCFCFC),
+                    color: customColors.textColor,
                   ))),
           //   PopupMenuButton(
           //     icon: const Icon(
@@ -212,71 +216,91 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: 160,
+                    height: 176,
                     child: IconSelector(
                         setIconInformation: setIconInformation,
                         iconType: iconType,
                         iconValue: iconValue),
                   ),
-                  const Divider(
-                    color: Colors.white,
+                  Divider(
+                    color: customColors.border,
+                  ),
+                  const SizedBox(
+                    height: 32,
                   ),
                   Row(
                     children: <Widget>[
-                      const Icon(
-                        Icons.person,
-                        color: Colors.white,
+                      Column(
+                        children: [
+                          const SizedBox(height: 16,),
+                          Icon(
+                            Icons.person,
+                            color: customColors.textColor,
+                          )
+                        ],
                       ),
+                      const SizedBox(width: 8.0,),
                       Expanded(
-                        child: FlatTextField(
-                          textController: titleTextController,
-                          labelText: "Title",
-                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Name", style: TextStyle(fontSize: 16.0)),
+                            const SizedBox(height: 4,),
+                            FlatTextField(
+                              textController: titleTextController,
+                              hintText: "Name",
+                            ),
+                          ],
+                        )
                       ),
                     ],
                   ),
                   const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      const Icon(
-                        Icons.key,
-                        color: Colors.white,
-                      ),
-                      Expanded(
-                        child: FlatTextField(
-                          textController: secretTextController,
-                          labelText: "Secret",
-                          password: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
+                    height: 16,
                   ),
                   Row(
                     children: [
                       const SizedBox(
-                        width: 24.0,
+                        width: 32.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Text("Issuer (optional)", style: TextStyle(fontSize: 16.0)),
+                            const SizedBox(height: 4,),
+                            FlatTextField(
+                              textController: issuerTextController,
+                              hintText: "Issuer",
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 16.0,
                       ),
 
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            FlatTextField(
-                              textController: issuerTextController,
-                              labelText: "Issuer (optional)",
-                            ),
+                            const Text("Group", style: TextStyle(fontSize: 16.0)),
+                            const SizedBox(height: 4,),
+                            FlatDropdown(
+                              value: groupValue,
+                              onValueChanged: (String? valueArg) {
+                                setState(() {
+                                  groupValue = valueArg!;
+                                });
+                              },
+                              items: const ["No Group"],
+                            )
                           ],
                         ),
                       ),
 
-                      //   const SizedBox(
-                      //     width: 16.0,
-                      //   ),
+
 
                       //   Expanded(
                       //     child: Column(
@@ -284,7 +308,7 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                       //       children: <Widget>[
                       //         FlatDropdown(
                       //           value: groupValue,
-                      //           labelText: "Group",
+                      //           hintText: "Group",
                       //           onValueChanged: (String? valueArg) {
                       //             setState(() {
                       //               groupValue = valueArg!;
@@ -298,49 +322,107 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                     ],
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 16,
                   ),
                   Row(
                     children: <Widget>[
-                      const Icon(
-                        Icons.sort,
-                        color: Colors.white,
+                      Column(
+                        children: [
+                          const SizedBox(height: 16,),
+                          Icon(
+                            Icons.note,
+                            color: customColors.textColor,
+                          )
+                        ],
                       ),
+                      const SizedBox(width: 8.0,),
                       Expanded(
-                        child: FlatTextField(
-                          textController: notesTextController,
-                          labelText: "Notes (optional)",
-                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Note (optional)", style: TextStyle(fontSize: 16.0),),
+                            const SizedBox(height: 4,),
+                            FlatTextField(
+                              textController: notesTextController,
+                              hintText: "Note",
+                            ),
+                          ],
+                        )
                       ),
                     ],
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 16,
+                  ),
+                  Divider(
+                    color: customColors.border,
+                  ),
+                  const SizedBox(
+                    height: 16,
                   ),
                   ExpandablePanel(
                     header: const Padding(
-                      padding: EdgeInsets.only(left: 4.0, top: 8),
+                      padding: EdgeInsets.only(left: 4.0),
                       child: Text(
                         "Advanced",
                         textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     ),
-                    theme: const ExpandableThemeData(iconColor: Colors.white),
-                    collapsed: Column(children: const []),
+                    theme: ExpandableThemeData(iconColor: customColors.textColor),
+                    collapsed: const Column(children: []),
                     expanded: Column(children: [
                       Row(
                         children: <Widget>[
-                          const Icon(
-                            Icons.info,
-                            color: Colors.white,
+                          Column(
+                            children: [
+                              const SizedBox(height: 16,),
+                              Icon(
+                                Icons.key,
+                                color: customColors.textColor,
+                              )
+                            ],
                           ),
+                          const SizedBox(width: 8.0,),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Secret", style: TextStyle(fontSize: 16.0),),
+                                const SizedBox(height: 4,),
+                                FlatTextField(
+                                  textController: secretTextController,
+                                  hintText: "Secret",
+                                  password: true,
+                                ),
+                              ],
+                            )
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              const SizedBox(height: 16,),
+                              Icon(
+                                Icons.info,
+                                color: customColors.textColor,
+                              )
+                            ],
+                          ),
+                          const SizedBox(width: 8.0,),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
+                                const Text("Type", style: TextStyle(fontSize: 16.0),),
+                                const SizedBox(height: 4,),
                                 FlatDropdown(
                                   value: typeValue,
-                                  labelText: "Type",
                                   onValueChanged: (String? valueArg) {
                                     setState(() {
                                       typeValue = valueArg!;
@@ -358,9 +440,10 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
+                                const Text("Hash Function", style: TextStyle(fontSize: 16.0),),
+                                const SizedBox(height: 4,),
                                 FlatDropdown(
                                   value: hashValue,
-                                  labelText: "Hash Function",
                                   onValueChanged: (String? valueArg) {
                                     setState(() {
                                       hashValue = valueArg!;
@@ -374,44 +457,72 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         ],
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 16,
                       ),
                       Row(
                         children: <Widget>[
-                          const SizedBox(
-                            width: 24.0,
+                          Column(
+                            children: [
+                              const SizedBox(height: 16,),
+                              Icon(
+                                Icons.timer,
+                                color: customColors.textColor,
+                              )
+                            ],
                           ),
+                          const SizedBox(width: 8.0,),
                           Expanded(
-                            child: FlatTextField(
-                              textController: periodTextController,
-                              labelText: "Period (Seconds)",
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Text("Period (Seconds)", style: TextStyle(fontSize: 16.0),),
+                                const SizedBox(height: 4,),
+                                FlatTextField(
+                                  textController: periodTextController,
+                                  hintText: "Period",
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
                             width: 16.0,
                           ),
                           Expanded(
-                            child: FlatTextField(
-                              textController: digitsTextController,
-                              labelText: "Digits",
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Text("Period (Seconds)", style: TextStyle(fontSize: 16.0),),
+                                const SizedBox(height: 4,),
+                                FlatTextField(
+                                  textController: digitsTextController,
+                                  hintText: "Digits",
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 16,
                       ),
                       Row(
                         children: [
                           const SizedBox(
-                            width: 24.0,
+                            width: 32.0,
                           ),
                           Expanded(
-                            child: FlatTextField(
-                              textController: usageTextController,
-                              labelText: "Usage Count",
-                              enabled: false,
-                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Usage Count", style: TextStyle(fontSize: 16.0),),
+                                const SizedBox(height: 4,),
+                                FlatTextField(
+                                  textController: usageTextController,
+                                  hintText: "Usage Count",
+                                  enabled: false,
+                                ),
+                              ],
+                            )
                           ),
                         ],
                       ),

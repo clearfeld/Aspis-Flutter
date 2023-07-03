@@ -66,6 +66,9 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
 
       setState(() {
         sOTPCode = code;
+        if (sOTPCode!.length == 6) {
+          sOTPCode = '${sOTPCode!.substring(0,3)} ${sOTPCode!.substring(3,6)}';
+        }
       });
     } catch (e) {
       debugPrint(e.toString());
@@ -102,9 +105,8 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
         widget.onSelectedOTPCode(widget.otpcode);
       }),
       child: Container(
-        margin: const EdgeInsets.all(8.0),
-        // color: customColors!.background,
-        constraints: const BoxConstraints(maxWidth: 320),
+        margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+        constraints: const BoxConstraints(minWidth: 320),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: customColors!.background,
@@ -135,17 +137,17 @@ class _OTPCodeBlockState extends ConsumerState<OTPCodeBlock> {
                           if (widget.otpcode.issuer != null) ...[
                             const Text("  "),
                           ],
-                          Text(widget.otpcode.title),
+                          Text('(${widget.otpcode.title})', style: TextStyle(color: Colors.grey),),
                         ],
                       ),
                       const SizedBox(
-                        height: 4.0,
+                        height: 6.0,
                       ),
                       Row(
                         children: <Widget>[
                           Text(
                             sOTPCode ?? "",
-                            style: const TextStyle(fontSize: 20.0),
+                            style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
