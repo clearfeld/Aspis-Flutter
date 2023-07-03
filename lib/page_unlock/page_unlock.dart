@@ -3,12 +3,14 @@ import 'package:aspis/global_ntp.dart';
 import 'package:aspis/global_realm.dart';
 import 'package:aspis/components/flat_textfield.dart';
 import 'package:aspis/store/test.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as pe;
 import 'package:realm/realm.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PageUnlock extends StatefulWidget {
   const PageUnlock({super.key});
@@ -34,7 +36,7 @@ class _PageUnlockState extends State<PageUnlock> {
     super.dispose();
   }
 
-  void attemptToUnlockRealm() {
+  void attemptToUnlockRealm() async {
     // print("Attempting to unlock realm");
     var bytes = utf8.encode(passwordTextController.text);
     var digest = sha256.convert(bytes);
@@ -65,10 +67,22 @@ class _PageUnlockState extends State<PageUnlock> {
     // Get on-disk location of the default Realm
     final storagePath = Configuration.defaultStoragePath;
     // See value in your application
-    debugPrint(storagePath);
+    debugPrint("Default realm stroage path - ${storagePath}");
 
     try {
-      final encryptedConfig = Configuration.local([Person.schema, OTP.schema], encryptionKey: x);
+      var realmFilePath = null;
+
+      final appDocDir = await getApplicationDocumentsDirectory();
+      debugPrint("Default debug realm path - ${appDocDir.path + "\\aspis"}");
+
+      if(kDebugMode) {
+        final appDocDir = await getApplicationDocumentsDirectory();
+        realmFilePath = appDocDir.path + "\\aspis";
+      }
+
+      final encryptedConfig =
+          Configuration.local([Person.schema, OTP.schema], encryptionKey: x, path: realmFilePath);
+
       gRealm = Realm(encryptedConfig);
       passwordTextController.text = "";
       setState(
