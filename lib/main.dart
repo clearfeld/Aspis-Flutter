@@ -36,11 +36,12 @@ final GoRouter _router = GoRouter(
   ],
 );
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ThemeMode tm = ref.watch(themeProvider);
     return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
       //   ),
       theme: custLightTheme,
       darkTheme: custDarkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: tm,
       //   theme: ThemeData(
       //     primarySwatch: Colors.blue,
       //   ),

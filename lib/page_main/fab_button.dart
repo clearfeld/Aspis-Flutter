@@ -1,3 +1,4 @@
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aspis/page_manual_entry/page_manual_entry.dart';
@@ -16,7 +17,7 @@ class FabButton extends StatelessWidget {
         PageRouteBuilder(
           pageBuilder:
               (BuildContext context, Animation<double> animation1, Animation<double> animation2) {
-            return const PageManualEntry();
+            return PageManualEntry();
           },
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
@@ -30,6 +31,7 @@ class FabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
     return FloatingActionButton(
       // tooltip: 'FAB',
       elevation: 0,
@@ -40,7 +42,7 @@ class FabButton extends StatelessWidget {
           builder: (BuildContext context) {
             return Container(
               height: 200,
-              color: Colors.grey,
+              color: customColors!.background,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +50,12 @@ class FabButton extends StatelessWidget {
                   children: <Widget>[
                     // const Text('Modal BottomSheet'),
                     ElevatedButton(
-                        child: const Text('Enter Manually'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: customColors.buttonPrimary,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          fixedSize: Size(240, 32),
+                        ),
+                        child: const Text('Enter Manually', style: TextStyle(color: Colors.white),),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -56,13 +63,14 @@ class FabButton extends StatelessWidget {
                             PageRouteBuilder(
                               pageBuilder: (BuildContext context, Animation<double> animation1,
                                   Animation<double> animation2) {
-                                return const PageManualEntry();
+                                return PageManualEntry();
                               },
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
                           );
-                        }),
+                        },
+                    ),
 
                     const SizedBox(
                       height: 8.0,
@@ -70,7 +78,12 @@ class FabButton extends StatelessWidget {
 
                     if (isMobile) ...[
                       ElevatedButton(
-                        child: const Text('Scan QR Code - mobile only'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: customColors.buttonPrimary,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          fixedSize: Size(240, 32),
+                        ),
+                        child: const Text('Scan QR Code - mobile only', style: TextStyle(color: Colors.white),),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -92,7 +105,12 @@ class FabButton extends StatelessWidget {
                     ),
 
                     ElevatedButton(
-                      child: const Text('Close BottomSheet'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: customColors.buttonGrey,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          fixedSize: Size(240, 32),
+                        ),
+                      child: const Text('Close BottomSheet', style: TextStyle(color: Colors.white),),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],

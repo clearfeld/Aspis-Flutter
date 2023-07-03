@@ -1,3 +1,4 @@
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 
 class PageAbout extends StatelessWidget {
@@ -5,13 +6,14 @@ class PageAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           "About",
         ),
         elevation: 0,
-        backgroundColor: const Color(0xFF006699),
+        backgroundColor: customColors!.navbarBackground,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -19,29 +21,47 @@ class PageAbout extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const <Widget>[
+            children: <Widget>[
               Text(
                 "Aspis",
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: customColors.buttonPrimary, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 4.0,
               ),
               Text(
                 "version 0.0.1",
               ),
               SizedBox(
-                height: 16.0,
+                height: 8.0,
+              ),
+              Divider(
+                color: customColors.border,
               ),
               SizedBox(
-                height: 16.0,
+                height: 8.0,
               ),
               Text(
                 "Developers",
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: customColors.buttonPrimary, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 4.0,
               ),
               Text(
                 "@clearfeld",
               ),
+              SizedBox(
+                height: 4.0,
+              ),
               Text(
                 "@AaronPatterson1",
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Divider(
+                color: customColors.border,
               ),
             ],
           ),

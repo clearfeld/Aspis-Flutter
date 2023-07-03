@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:aspis/components/flat_textfield.dart';
+import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -68,6 +70,7 @@ class _IconSelectorState extends State<IconSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
     return SizedBox(
       // width: MediaQuery.of(context).size.height * 0.8,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -78,21 +81,59 @@ class _IconSelectorState extends State<IconSelector> {
               builder: (BuildContext context) {
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.8,
-                  color: Colors.black,
+                  color: customColors!.navbarBackground,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         const SizedBox(
-                          height: 8,
+                          height: 16,
                         ),
-                        ElevatedButton(
-                          child: const Text('Close BottomSheet'),
-                          onPressed: () => Navigator.pop(context),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 40,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(width: 10,),
+                              Expanded(
+                                child: FlatTextField(
+                                  textController: searchTextController,
+                                  hintText: "Search",
+                                  backgroundColor: customColors.backgroundCompliment!,
+                                  prefixIcon: Icons.search,
+                                ),
+                              ),
+                              SizedBox(width: 10,),
+                              Center(
+                                child: Container(
+                                  width: 40.0,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: customColors.buttonGrey,
+                                  ),
+                                  child: SizedBox(
+                                    child: IconButton(
+                                      icon: const Icon(Icons.clear, color: Colors.white,),
+                                      onPressed: () {
+                                        searchTextController.text = '';
+                                        setState(() {
+                                          //appbarState = EAppbarState.none;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10,),
+                            ],
+                          ),
                         ),
                         const SizedBox(
-                          height: 8,
+                          height: 16,
+                        ),
+                        Divider(
+                          color: customColors.border,
                         ),
                         Expanded(
                           child: GridView.builder(
@@ -129,8 +170,8 @@ class _IconSelectorState extends State<IconSelector> {
             );
           },
           child: Container(
-            width: 88.0,
-            height: 88.0,
+            width: 160.0,
+            height: 160.0,
             padding: const EdgeInsets.all(16.0),
             child: SvgPicture.asset(currentIcon, semanticsLabel: currentIcon),
           ),

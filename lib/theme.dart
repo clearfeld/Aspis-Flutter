@@ -1,33 +1,34 @@
 // import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// final themeProvider = StateNotifierProvider<ThemeManager, ThemeMode>((ref) {
-//   return ThemeManager();
-// });
+final themeProvider = StateNotifierProvider<ThemeManager, ThemeMode>((ref) {
+  return ThemeManager();
+});
 
-// class ThemeManager extends StateNotifier<ThemeMode> {
-//   ThemeManager() : super(ThemeMode.dark);
+class ThemeManager extends StateNotifier<ThemeMode> {
+  ThemeManager() : super(ThemeMode.dark);
 
-//   void toggleTheme() {
-//     if (state == ThemeMode.dark) {
-//       state = ThemeMode.light;
-//     } else {
-//       state = ThemeMode.dark;
-//     }
-//   }
+  void toggleTheme() {
+    if (state == ThemeMode.dark) {
+      state = ThemeMode.light;
+    } else {
+      state = ThemeMode.dark;
+    }
+  }
 
-//   void setLightMode() {
-//     state = ThemeMode.light;
-//   }
+  void setLightMode() {
+    state = ThemeMode.light;
+  }
 
-//   void setDarkMode() {
-//     state = ThemeMode.dark;
-//   }
-// }
+  void setDarkMode() {
+    state = ThemeMode.dark;
+  }
+}
 
 ///
 
@@ -38,11 +39,12 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.background,
     required this.backgroundCompliment,
     required this.textColor,
+    required this.border,
     // navbar
     required this.navbarBackground,
     //
-    required this.buttonAffirmative,
-    required this.buttonNegative,
+    required this.buttonGrey,
+    required this.buttonPrimary,
     // progress bars
     required this.progressBarBackground,
     required this.progressBarForeground,
@@ -50,11 +52,12 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? background;
   final Color? backgroundCompliment;
   final Color? textColor;
+  final Color? border;
 
   final Color? navbarBackground;
 
-  final Color? buttonAffirmative;
-  final Color? buttonNegative;
+  final Color? buttonGrey;
+  final Color? buttonPrimary;
 
   final Color? progressBarBackground;
   final Color? progressBarForeground;
@@ -64,9 +67,10 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? background,
     Color? backgroundCompliment,
     Color? textColor,
+    Color? border,
     Color? navbarBackground,
-    Color? buttonAffirmative,
-    Color? buttonNegative,
+    Color? buttonGrey,
+    Color? buttonPrimary,
     Color? progressBarBackground,
     Color? progressBarForeground,
   }) {
@@ -75,8 +79,9 @@ class CustomColors extends ThemeExtension<CustomColors> {
       backgroundCompliment: backgroundCompliment ?? this.backgroundCompliment,
       textColor: textColor ?? this.textColor,
       navbarBackground: navbarBackground ?? this.navbarBackground,
-      buttonAffirmative: buttonAffirmative ?? this.buttonAffirmative,
-      buttonNegative: buttonNegative ?? this.buttonNegative,
+      border: border ?? this.border,
+      buttonGrey: buttonGrey ?? this.buttonGrey,
+      buttonPrimary: buttonPrimary ?? this.buttonPrimary,
       progressBarBackground: progressBarBackground ?? this.progressBarBackground,
       progressBarForeground: progressBarForeground ?? this.progressBarForeground,
     );
@@ -92,9 +97,10 @@ class CustomColors extends ThemeExtension<CustomColors> {
       background: Color.lerp(background, other.background, t),
       backgroundCompliment: Color.lerp(backgroundCompliment, other.backgroundCompliment, t),
       textColor: Color.lerp(textColor, other.textColor, t),
+      border: Color.lerp(border, other.border, t),
       navbarBackground: Color.lerp(navbarBackground, other.navbarBackground, t),
-      buttonAffirmative: Color.lerp(buttonAffirmative, other.buttonAffirmative, t),
-      buttonNegative: Color.lerp(buttonNegative, other.buttonNegative, t),
+      buttonGrey: Color.lerp(buttonGrey, other.buttonGrey, t),
+      buttonPrimary: Color.lerp(buttonPrimary, other.buttonPrimary, t),
       progressBarBackground: Color.lerp(progressBarBackground, other.progressBarBackground, t),
       progressBarForeground: Color.lerp(progressBarForeground, other.progressBarForeground, t),
     );
@@ -112,14 +118,15 @@ final custDarkTheme = ThemeData.dark().copyWith(
   extensions: <ThemeExtension<dynamic>>[
     const CustomColors(
       // general
-      background: Color(0xFF111111),
-      backgroundCompliment: Color(0xFF1E1E1E),
+      background: Color(0xFF252525),
+      backgroundCompliment: Color(0xFF201f1e),
       textColor: Color(0xFFFFFFFF),
+      border: Color.fromARGB(255, 48, 48, 48),
       // navabar
-      navbarBackground: Color(0xFF1E1E1E),
+      navbarBackground: Color(0xFF252525),
       //
-      buttonAffirmative: Color(0xfff39c12),
-      buttonNegative: Color(0xffe74c3c),
+      buttonGrey: Color(0xff5d5d5d),
+      buttonPrimary: Color(0xff006699),
       // progress_bar
       progressBarBackground: Color.fromARGB(255, 27, 20, 20),
       progressBarForeground: Color.fromARGB(255, 83, 109, 209),
@@ -141,13 +148,14 @@ final custLightTheme = ThemeData.light().copyWith(
     const CustomColors(
       // general
       background: Color(0xFFF8F8F8),
-      backgroundCompliment: Color.fromRGBO(255, 255, 255, 1.0),
+      backgroundCompliment: Color(0xFFfcfcfc),
       textColor: Color(0xFF000000),
+      border: Color.fromARGB(255, 214, 214, 214),
       // navabar
-      navbarBackground: Color(0xFF053a7a),
+      navbarBackground: Color(0xFFf8f8f8),
       //
-      buttonAffirmative: Color(0xfff39c12),
-      buttonNegative: Color(0xffe74c3c),
+      buttonGrey: Color(0xff5d5d5d),
+      buttonPrimary: Color(0xff006699),
       // progress_bar
       progressBarBackground: Color(0xFFF1F1F1),
       progressBarForeground: Color(0xFF254CFF),
