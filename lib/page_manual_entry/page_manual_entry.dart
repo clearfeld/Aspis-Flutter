@@ -179,10 +179,20 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
         actions: [
           TextButton(
               onPressed: () => {pSaveEntry()},
-              child: Text("Create",
-                  style: TextStyle(
+              child: (widget.fOTPCode == null)
+              ?  Text(
+                "Create",
+                style: TextStyle(
                     color: customColors.textColor,
-                  ))),
+                  ))
+              : Text(
+                "Save",
+                style: TextStyle(
+                    color: customColors.textColor,
+                  )),
+
+          ),
+
           //   PopupMenuButton(
           //     icon: const Icon(
           //       Icons.more_vert,
