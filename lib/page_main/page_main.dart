@@ -33,7 +33,6 @@ class _PageMainState extends ConsumerState<PageMain> {
   final searchTextController = TextEditingController();
   EAppbarState appbarState = EAppbarState.none;
   var selectedOTP = null;
-
   // RealmResults<OTP>? pOTPCodes;
 
   @override
@@ -41,6 +40,8 @@ class _PageMainState extends ConsumerState<PageMain> {
     super.initState();
 
     var pOTPCodes = gRealm.all<OTP>();
+
+    searchTextController.addListener(searchValueOnChange);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.watch(OTPManagerProvider.notifier).setOTPList(pOTPCodes);
@@ -57,20 +58,34 @@ class _PageMainState extends ConsumerState<PageMain> {
     searchTextController.dispose();
   }
 
-//   List<OTP> filteredCodes() {
-//     List<OTP> filteredList = [];
-//     if (pOTPCodes != null) {
-//       var searchText = searchTextController.text.toLowerCase();
-//       for (var otpCode in pOTPCodes!) {
-//         if (otpCode.title.toLowerCase().contains(searchText) ||
-//             otpCode.issuer!.toLowerCase().contains(searchText) ||
-//             searchText == '') {
-//           filteredList.add(otpCode);
-//         }
-//       }
-//     }
-//     return filteredList;
-//   }
+    void searchValueOnChange() {
+        setState(() {});
+    }
+
+  List<OTP> filteredCodes(pOTPCodes) {
+    List<OTP> filteredList = [];
+
+    if (pOTPCodes != null) {
+        if(searchTextController.text == "") {
+            for (var otpCode in pOTPCodes!) {
+                filteredList.add(otpCode);
+            }
+            return filteredList;
+        }
+
+        var searchText = searchTextController.text.toLowerCase();
+        for (var otpCode in pOTPCodes!) {
+            // debugPrint(otpCode.title.toLowerCase());
+            // debugPrint(searchText);
+            if (otpCode.title.toLowerCase().contains(searchText) ||
+                otpCode.issuer!.toLowerCase().contains(searchText)) {
+                filteredList.add(otpCode);
+            }
+        }
+    }
+
+    return filteredList;
+  }
 
   void selectOTPCode(arg) {
     setState(() {
@@ -137,18 +152,21 @@ class _PageMainState extends ConsumerState<PageMain> {
   }
 
   Widget? showFab() {
-    if(appbarState != EAppbarState.search) {
-        return FabButton();
+    if(appbarState == EAppbarState.search) {
+        return null;
+    }
+    else if(appbarState == EAppbarState.selected) {
+        return null;
     }
 
-    return null;
+    return FabButton();
   }
 
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     RealmResults<OTP>? pOTPCodes = ref.watch(OTPManagerProvider); // .notifier).state;
-    // print(pOTPCodes);
+    var fpOTPCodes = filteredCodes(pOTPCodes);
 
     AppBar vappBar;
     if (appbarState == EAppbarState.search) {
@@ -169,7 +187,7 @@ class _PageMainState extends ConsumerState<PageMain> {
                     prefixIcon: Icons.search,
                   ),
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 8,),
                 Center(
                   child: Container(
                     width: 40.0,
@@ -335,8 +353,8 @@ class _PageMainState extends ConsumerState<PageMain> {
       appBar: vappBar,
       body: Column(
         children: [
-          Row(
-            children: const <Widget>[
+          const Row(
+            children: <Widget>[
               RefreshTimer(),
             ],
           ),
@@ -355,19 +373,12 @@ class _PageMainState extends ConsumerState<PageMain> {
                   spacing: 8,
                   runSpacing: 4,
                   children: <Widget>[
-                    //   const SizedBox(
-                    //     height: 16,
-                    //   ),
                     if (pOTPCodes != null)
-                      for (var otpcode in pOTPCodes) ...[
-                        /// filteredCodes()) ...[
+                        for (var otpcode in fpOTPCodes) ...[
                         OTPCodeBlock(
                             otpcode: otpcode,
                             onSelectedOTPCode: selectOTPCode,
                             selectedOTP: selectedOTP),
-                        // const SizedBox(
-                        //   height: 4.0,
-                        // ),
                       ],
                     const SizedBox(
                       height: 4.0,
@@ -376,7 +387,17 @@ class _PageMainState extends ConsumerState<PageMain> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Showing "), Text("${pOTPCodes.length}", style: const TextStyle(fontWeight: FontWeight.bold),), const Text(' Entries')
+                          const Text("Showing "),
+
+                          if (fpOTPCodes.length != pOTPCodes.length)
+                            Text("${fpOTPCodes.length} of ${pOTPCodes.length}",
+                                style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                          if (fpOTPCodes.length == pOTPCodes.length)
+                            Text("${pOTPCodes.length}",
+                              style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                          const Text(' Entries')
                         ],
                       )
                   ],
@@ -385,7 +406,7 @@ class _PageMainState extends ConsumerState<PageMain> {
             ),
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 16.0
           )
         ],
