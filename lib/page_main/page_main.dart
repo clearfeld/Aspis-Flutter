@@ -338,12 +338,12 @@ class _PageMainState extends ConsumerState<PageMain> {
                   AppLocalizations.of(context)?.page_about__about ?? ""
                 ),
               ),
-              //   const PopupMenuItem<int>(
-              //     value: 1,
-              //     child: Text(
-              //       "Settings",
-              //     ),
-              //   ),
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: Text(
+                    AppLocalizations.of(context)?.page_settings__settings ?? "",
+                  ),
+                ),
             ],
             onSelected: (item) => {_moreOptionSelected(item)},
           ),

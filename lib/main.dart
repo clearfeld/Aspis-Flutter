@@ -1,4 +1,5 @@
 import 'package:aspis/theme.dart';
+import 'package:aspis/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,6 +43,8 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeMode tm = ref.watch(themeProvider);
+    final LocaleStruct lm = ref.watch(localeProvider);
+
     return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -57,6 +60,7 @@ class MyApp extends ConsumerWidget {
       routerConfig: _router,
 
       // locale: const Locale("fr"),
+      locale: Locale(lm.languageNameCode ?? "en"),
 
       localizationsDelegates: const [
         AppLocalizations.delegate,

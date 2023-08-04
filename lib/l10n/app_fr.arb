@@ -34,6 +34,11 @@
   "page_add_entry__usage_count": "Nombre d'utilisations",
 
   "@__SETTINGS_PAGE": {},
+  "page_settings__settings": "Paramètres",
+  "page_settings__locale": "Lieu",
+  "page_settings__language": "Langue",
+  "page_settings__select_your_desired_theme": "Sélectionnez votre thème souhaité",
+  "page_settings__okay": "D'accord",
 
   "@__ABOUT_PAGE": {},
   "page_about__about": "À propos",

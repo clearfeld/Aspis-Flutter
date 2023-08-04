@@ -38,6 +38,12 @@
 
 
   "@__SETTINGS_PAGE": {},
+  "page_settings__settings": "Settings",
+  "page_settings__locale": "Locale",
+  "page_settings__language": "Language",
+  "page_settings__select_your_desired_theme": "Select your desired theme",
+  "page_settings__okay": "Okay",
+
 
   "@__ABOUT_PAGE": {},
   "page_about__about": "About",
