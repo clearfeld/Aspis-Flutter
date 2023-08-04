@@ -1,5 +1,6 @@
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PageAbout extends StatelessWidget {
   const PageAbout({super.key});
@@ -9,8 +10,8 @@ class PageAbout extends StatelessWidget {
     final customColors = Theme.of(context).extension<CustomColors>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "About",
+        title: Text(
+          AppLocalizations.of(context)?.page_about__about ?? "",
         ),
         elevation: 0,
         backgroundColor: customColors!.navbarBackground,
@@ -29,8 +30,8 @@ class PageAbout extends StatelessWidget {
               const SizedBox(
                 height: 4.0,
               ),
-              const Text(
-                "Version v0.0.3",
+              Text(
+                (AppLocalizations.of(context)?.page_about__version ?? "") + " v0.0.3",
               ),
               const SizedBox(
                 height: 8.0,
@@ -42,7 +43,7 @@ class PageAbout extends StatelessWidget {
                 height: 8.0,
               ),
               Text(
-                "Developers",
+                AppLocalizations.of(context)?.page_about__developers ?? "",
                 style: TextStyle(color: customColors.buttonPrimary, fontWeight: FontWeight.bold),
               ),
               const SizedBox(

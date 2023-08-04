@@ -1,5 +1,6 @@
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:aspis/page_manual_entry/page_manual_entry.dart';
 import 'package:aspis/page_scan/page_scan.dart';
@@ -50,26 +51,29 @@ class FabButton extends StatelessWidget {
                   children: <Widget>[
                     // const Text('Modal BottomSheet'),
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: customColors.buttonPrimary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                          fixedSize: Size(240, 32),
-                        ),
-                        child: const Text('Enter Manually', style: TextStyle(color: Colors.white),),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (BuildContext context, Animation<double> animation1,
-                                  Animation<double> animation2) {
-                                return PageManualEntry();
-                              },
-                              transitionDuration: Duration.zero,
-                              reverseTransitionDuration: Duration.zero,
-                            ),
-                          );
-                        },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: customColors.buttonPrimary,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                        fixedSize: Size(240, 32),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)?.home_page__enter_manually ?? "",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (BuildContext context, Animation<double> animation1,
+                                Animation<double> animation2) {
+                              return PageManualEntry();
+                            },
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero,
+                          ),
+                        );
+                      },
                     ),
 
                     const SizedBox(
@@ -83,7 +87,10 @@ class FabButton extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           fixedSize: Size(240, 32),
                         ),
-                        child: const Text('Scan QR Code - mobile only', style: TextStyle(color: Colors.white),),
+                        child: const Text(
+                          'Scan QR Code - mobile only',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -105,12 +112,15 @@ class FabButton extends StatelessWidget {
                     ),
 
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: customColors.buttonGrey,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                          fixedSize: Size(240, 32),
-                        ),
-                      child: const Text('Close', style: TextStyle(color: Colors.white),),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: customColors.buttonGrey,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                        fixedSize: Size(240, 32),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)?.home_page__close ?? "",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],

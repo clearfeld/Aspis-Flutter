@@ -10,8 +10,40 @@
   "unlock_page__unlock": "Unlock",
 
   "@__HOME_PAGE": {},
+  "home_page__search": "Search",
+  "home_page__showing": "Showing ",
+  "home_page__entries": " Entries",
+  "home_page__enter_manually": "Enter Manually",
+  "home_page__close": "Close",
+  "home_page__delete": "Delete",
+
+  "@__PAGE_ADD_ENTRY": {},
+  "page_add_entry__add_entry": "Add Entry",
+  "page_add_entry__create": "Create",
+  "page_add_entry__save": "Save",
+  "page_add_entry__name": "Name",
+  "page_add_entry__issuer": "Issuer",
+  "page_add_entry__optional": "optional",
+  "page_add_entry__group": "Group",
+  "page_add_entry__no_group": "No Group",
+  "page_add_entry__note": "Note",
+  "page_add_entry__advanced": "Advanced",
+  "page_add_entry__secret": "Secret",
+  "page_add_entry__type": "Type",
+  "page_add_entry__hash_function": "Hash Function",
+  "page_add_entry__period_seconds": "Period (Seconds)",
+  "page_add_entry__period": "Period",
+  "page_add_entry__length": "Length",
+  "page_add_entry__usage_count": "Usage Count",
+
 
   "@__SETTINGS_PAGE": {},
 
-  "@__ABOUT_PAGE": {}
+  "@__ABOUT_PAGE": {},
+  "page_about__about": "About",
+  "page_about__version": "Version",
+  "page_about__developers": "Developers",
+
+  "@__END": {}
 }
+

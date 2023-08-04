@@ -1,6 +1,7 @@
 import 'package:aspis/page_manual_entry/IconSelector.dart';
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:aspis/global_realm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -171,26 +172,23 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
     final customColors = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Entry"),
+        title: Text(AppLocalizations.of(context)?.page_add_entry__add_entry ?? ""),
         centerTitle: true,
         elevation: 0,
         backgroundColor: customColors.navbarBackground,
         surfaceTintColor: Colors.transparent,
         actions: [
           TextButton(
-              onPressed: () => {pSaveEntry()},
-              child: (widget.fOTPCode == null)
-              ?  Text(
-                "Create",
-                style: TextStyle(
-                    color: customColors.textColor,
-                  ))
-              : Text(
-                "Save",
-                style: TextStyle(
-                    color: customColors.textColor,
-                  )),
-
+            onPressed: () => {pSaveEntry()},
+            child: (widget.fOTPCode == null)
+                ? Text(AppLocalizations.of(context)?.page_add_entry__create ?? "",
+                    style: TextStyle(
+                      color: customColors.textColor,
+                    ))
+                : Text(AppLocalizations.of(context)?.page_add_entry__save ?? "",
+                    style: TextStyle(
+                      color: customColors.textColor,
+                    )),
           ),
 
           //   PopupMenuButton(
@@ -242,27 +240,33 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                     children: <Widget>[
                       Column(
                         children: [
-                          const SizedBox(height: 24,),
+                          const SizedBox(
+                            height: 24,
+                          ),
                           Icon(
                             Icons.person,
                             color: customColors.textColor,
                           )
                         ],
                       ),
-                      const SizedBox(width: 8.0,),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Name", style: TextStyle(fontSize: 16.0)),
-                            const SizedBox(height: 4,),
-                            FlatTextField(
-                              textController: titleTextController,
-                              hintText: "Name",
-                            ),
-                          ],
-                        )
+                      const SizedBox(
+                        width: 8.0,
                       ),
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(AppLocalizations.of(context)?.page_add_entry__name ?? "",
+                              style: TextStyle(fontSize: 16.0)),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          FlatTextField(
+                            textController: titleTextController,
+                            hintText: AppLocalizations.of(context)?.page_add_entry__name ?? "",
+                          ),
+                        ],
+                      )),
                     ],
                   ),
                   const SizedBox(
@@ -277,11 +281,18 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const Text("Issuer (optional)", style: TextStyle(fontSize: 16.0)),
-                            const SizedBox(height: 4,),
+                            Text(
+                                (AppLocalizations.of(context)?.page_add_entry__issuer ?? "") +
+                                    " (" +
+                                    (AppLocalizations.of(context)?.page_add_entry__optional ?? "") +
+                                    ")",
+                                style: TextStyle(fontSize: 16.0)),
+                            const SizedBox(
+                              height: 4,
+                            ),
                             FlatTextField(
                               textController: issuerTextController,
-                              hintText: "Issuer",
+                              hintText: AppLocalizations.of(context)?.page_add_entry__issuer ?? "",
                             ),
                           ],
                         ),
@@ -295,8 +306,11 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const Text("Group", style: TextStyle(fontSize: 16.0)),
-                            const SizedBox(height: 4,),
+                            Text(AppLocalizations.of(context)?.page_add_entry__group ?? "",
+                                style: TextStyle(fontSize: 16.0)),
+                            const SizedBox(
+                              height: 4,
+                            ),
                             FlatDropdown(
                               value: groupValue,
                               onValueChanged: (String? valueArg) {
@@ -304,13 +318,14 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                                   groupValue = valueArg!;
                                 });
                               },
-                              items: const ["No Group"],
+                              items: [
+                                // TODO: FIXME:
+                                "No Group" // AppLocalizations.of(context)?.page_add_entry__no_group ?? "",
+                              ],
                             )
                           ],
                         ),
                       ),
-
-
 
                       //   Expanded(
                       //     child: Column(
@@ -331,43 +346,50 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                       //   ),
                     ],
                   ),
-
                   const SizedBox(
                     height: 16,
                   ),
-
                   Row(
                     children: <Widget>[
                       Column(
                         children: [
-                          const SizedBox(height: 24,),
+                          const SizedBox(
+                            height: 24,
+                          ),
                           Icon(
                             Icons.note,
                             color: customColors.textColor,
                           )
                         ],
                       ),
-                      const SizedBox(width: 8.0,),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Note (optional)", style: TextStyle(fontSize: 16.0),),
-                            const SizedBox(height: 4,),
-                            FlatTextField(
-                              textController: notesTextController,
-                              hintText: "Note",
-                            ),
-                          ],
-                        )
+                      const SizedBox(
+                        width: 8.0,
                       ),
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            (AppLocalizations.of(context)?.page_add_entry__note ?? "") +
+                                " (" +
+                                (AppLocalizations.of(context)?.page_add_entry__optional ?? "") +
+                                ")",
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          FlatTextField(
+                            textController: notesTextController,
+                            hintText: AppLocalizations.of(context)?.page_add_entry__note ?? "",
+                          ),
+                        ],
+                      )),
                     ],
                   ),
-
                   const SizedBox(
                     height: 24.0,
                   ),
-
                   Divider(
                     color: customColors.border,
                   ),
@@ -379,48 +401,55 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Container(
                         alignment: Alignment.bottomLeft,
-                        child: const Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 8.0),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 8.0),
                           child: Text(
-                              "Advanced",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
+                            AppLocalizations.of(context)?.page_add_entry__advanced ?? "",
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
                         ),
                       ),
                     ),
                     theme: ExpandableThemeData(iconColor: customColors.textColor),
                     collapsed: const Column(children: []),
                     expanded: Column(children: [
-
-                        const SizedBox(height: 8,),
-
+                      const SizedBox(
+                        height: 8,
+                      ),
                       Row(
                         children: <Widget>[
-
                           Column(
                             children: [
-                              const SizedBox(height: 24,),
+                              const SizedBox(
+                                height: 24,
+                              ),
                               Icon(
                                 Icons.key,
                                 color: customColors.textColor,
                               )
                             ],
                           ),
-                          const SizedBox(width: 8.0,),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text("Secret", style: TextStyle(fontSize: 16.0),),
-                                const SizedBox(height: 4,),
-                                FlatTextField(
-                                  textController: secretTextController,
-                                  hintText: "Secret",
-                                  password: true,
-                                ),
-                              ],
-                            )
+                          const SizedBox(
+                            width: 8.0,
                           ),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)?.page_add_entry__secret ?? "",
+                                style: const TextStyle(fontSize: 16.0),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              FlatTextField(
+                                textController: secretTextController,
+                                hintText: AppLocalizations.of(context)?.page_add_entry__secret ?? "",
+                                password: true,
+                              ),
+                            ],
+                          )),
                         ],
                       ),
                       const SizedBox(
@@ -430,20 +459,29 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         children: <Widget>[
                           Column(
                             children: [
-                              const SizedBox(height: 24,),
+                              const SizedBox(
+                                height: 24,
+                              ),
                               Icon(
                                 Icons.info,
                                 color: customColors.textColor,
                               )
                             ],
                           ),
-                          const SizedBox(width: 8.0,),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                const Text("Type", style: TextStyle(fontSize: 16.0),),
-                                const SizedBox(height: 4,),
+                                Text(
+                                  AppLocalizations.of(context)?.page_add_entry__type ?? "",
+                                  style: const TextStyle(fontSize: 16.0),
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
                                 FlatDropdown(
                                   value: typeValue,
                                   onValueChanged: (String? valueArg) {
@@ -463,8 +501,13 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                const Text("Hash Function", style: TextStyle(fontSize: 16.0),),
-                                const SizedBox(height: 4,),
+                                Text(
+                                  AppLocalizations.of(context)?.page_add_entry__hash_function ?? "",
+                                  style: const TextStyle(fontSize: 16.0),
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
                                 FlatDropdown(
                                   value: hashValue,
                                   onValueChanged: (String? valueArg) {
@@ -486,23 +529,32 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                         children: <Widget>[
                           Column(
                             children: [
-                              const SizedBox(height: 24,),
+                              const SizedBox(
+                                height: 24,
+                              ),
                               Icon(
                                 Icons.timer,
                                 color: customColors.textColor,
                               )
                             ],
                           ),
-                          const SizedBox(width: 8.0,),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                const Text("Period (Seconds)", style: TextStyle(fontSize: 16.0),),
-                                const SizedBox(height: 4,),
+                                Text(
+                                  AppLocalizations.of(context)?.page_add_entry__period_seconds ?? "",
+                                  style: const TextStyle(fontSize: 16.0),
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
                                 FlatTextField(
                                   textController: periodTextController,
-                                  hintText: "Period",
+                                  hintText: AppLocalizations.of(context)?.page_add_entry__period ?? "",
                                 ),
                               ],
                             ),
@@ -514,11 +566,16 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                const Text("Period (Seconds)", style: TextStyle(fontSize: 16.0),),
-                                const SizedBox(height: 4,),
+                                Text(
+                                  AppLocalizations.of(context)?.page_add_entry__length ?? "",
+                                  style: const TextStyle(fontSize: 16.0),
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
                                 FlatTextField(
                                   textController: digitsTextController,
-                                  hintText: "Digits",
+                                  hintText: AppLocalizations.of(context)?.page_add_entry__length ?? "",
                                 ),
                               ],
                             ),
@@ -534,19 +591,23 @@ class _PageManualEntryState extends ConsumerState<PageManualEntry> {
                             width: 32.0,
                           ),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text("Usage Count", style: TextStyle(fontSize: 16.0),),
-                                const SizedBox(height: 4,),
-                                FlatTextField(
-                                  textController: usageTextController,
-                                  hintText: "Usage Count",
-                                  enabled: false,
-                                ),
-                              ],
-                            )
-                          ),
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)?.page_add_entry__usage_count ?? "",
+                                style: const TextStyle(fontSize: 16.0),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              FlatTextField(
+                                textController: usageTextController,
+                                hintText: AppLocalizations.of(context)?.page_add_entry__usage_count ?? "",
+                                enabled: false,
+                              ),
+                            ],
+                          )),
                         ],
                       ),
                       const SizedBox(

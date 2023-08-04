@@ -1,17 +1,44 @@
 {
   "@__UNLOCK_PAGE": {},
   "unlock_page__enterPassword": "Entrée mot de passe",
-  "@unlock_page__enterPassword": {
-    "description": "Vault unlock screen title - enter password"
-  },
 
   "unlock_page__password": "Mot de passe",
 
   "unlock_page__unlock": "Ouvrir",
 
   "@__HOME_PAGE": {},
+  "home_page__search": "Recherche",
+  "home_page__showing": "Affichage de ",
+  "home_page__entries": " Entrées",
+  "home_page__enter_manually": "Entrer Manuellement",
+  "home_page__close": "Fermer",
+  "home_page__delete": "Supprimer",
+
+  "@__PAGE_ADD_ENTRY": {},
+  "page_add_entry__add_entry": "Ajouter une entrée",
+  "page_add_entry__create": "Créer",
+  "page_add_entry__save": "Sauvegarder",
+  "page_add_entry__name": "Nom",
+  "page_add_entry__issuer": "Émetteur",
+  "page_add_entry__optional": "facultatif",
+  "page_add_entry__group": "Groupe",
+  "page_add_entry__no_group": "Aucun Groupe",
+  "page_add_entry__note": "Note",
+  "page_add_entry__advanced": "Avancé",
+  "page_add_entry__secret": "Secret",
+  "page_add_entry__type": "Taper",
+  "page_add_entry__hash_function": "Fonction de hachage",
+  "page_add_entry__period_seconds": "Période (Secondes)",
+  "page_add_entry__period": "Période",
+  "page_add_entry__length": "Longueur",
+  "page_add_entry__usage_count": "Nombre d'utilisations",
 
   "@__SETTINGS_PAGE": {},
 
-  "@__ABOUT_PAGE": {}
+  "@__ABOUT_PAGE": {},
+  "page_about__about": "À propos",
+  "page_about__version": "Version",
+  "page_about__developers": "Développeurs",
+
+  "@__END": {}
 }

@@ -8,6 +8,8 @@ import 'package:aspis/store/test.dart';
 import 'package:aspis/theme.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:aspis/page_main/fab_button.dart';
 
 import 'package:aspis/page_settings/page_settings.dart';
@@ -182,7 +184,7 @@ class _PageMainState extends ConsumerState<PageMain> {
                 Expanded(
                   child: FlatTextField(
                     textController: searchTextController,
-                    hintText: "Search",
+                    hintText: AppLocalizations.of(context)?.home_page__search ?? "",
                     backgroundColor: customColors.backgroundCompliment!,
                     prefixIcon: Icons.search,
                   ),
@@ -276,10 +278,10 @@ class _PageMainState extends ConsumerState<PageMain> {
               color: customColors.textColor,
             ),
             itemBuilder: (context) => [
-              const PopupMenuItem<int>(
+              PopupMenuItem<int>(
                 value: 0,
                 child: Text(
-                  "Delete",
+                  AppLocalizations.of(context)?.home_page__delete ?? "",
                 ),
               ),
               //   const PopupMenuItem<int>(
@@ -330,10 +332,10 @@ class _PageMainState extends ConsumerState<PageMain> {
               Icons.more_vert,
             ),
             itemBuilder: (context) => [
-              const PopupMenuItem<int>(
+              PopupMenuItem<int>(
                 value: 0,
                 child: Text(
-                  "About",
+                  AppLocalizations.of(context)?.page_about__about ?? ""
                 ),
               ),
               //   const PopupMenuItem<int>(
@@ -387,7 +389,9 @@ class _PageMainState extends ConsumerState<PageMain> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Showing "),
+                          Text(
+                            AppLocalizations.of(context)?.home_page__showing ?? ""
+                          ),
 
                           if (fpOTPCodes.length != pOTPCodes.length)
                             Text("${fpOTPCodes.length} of ${pOTPCodes.length}",
@@ -397,7 +401,9 @@ class _PageMainState extends ConsumerState<PageMain> {
                             Text("${pOTPCodes.length}",
                               style: const TextStyle(fontWeight: FontWeight.bold),),
 
-                          const Text(' Entries')
+                          Text(
+                            AppLocalizations.of(context)?.home_page__entries ?? ""
+                          )
                         ],
                       )
                   ],
