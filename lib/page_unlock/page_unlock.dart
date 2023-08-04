@@ -75,7 +75,7 @@ class _PageUnlockState extends State<PageUnlock> {
       final appDocDir = await getApplicationDocumentsDirectory();
       debugPrint("Default debug realm path - ${appDocDir.path + "\\aspis"}");
 
-      if(kDebugMode) {
+      if (kDebugMode) {
         final appDocDir = await getApplicationDocumentsDirectory();
         realmFilePath = appDocDir.path + "\\aspis";
       }
@@ -121,7 +121,7 @@ class _PageUnlockState extends State<PageUnlock> {
 
                 const SizedBox(height: 16),
 
-                Text(AppLocalizations.of(context)?.enterPassword ?? "",
+                Text(AppLocalizations.of(context)?.unlock_page__enterPassword ?? "",
                     style: const TextStyle(
                       fontSize: 24,
                     )),
@@ -143,14 +143,16 @@ class _PageUnlockState extends State<PageUnlock> {
                   constraints: const BoxConstraints(minWidth: 280, maxWidth: 640),
                   child: FlatTextField(
                     textController: passwordTextController,
-                    hintText: "Password",
+                    hintText: AppLocalizations.of(context)?.unlock_page__password ?? "",
                     password: true,
                   ),
                 ),
 
                 const SizedBox(height: 16),
 
-                TextButton(onPressed: () => {attemptToUnlockRealm()}, child: const Text("Unlock"))
+                TextButton(
+                    onPressed: () => {attemptToUnlockRealm()},
+                    child: Text(AppLocalizations.of(context)?.unlock_page__unlock ?? ""))
               ],
             ),
           ),

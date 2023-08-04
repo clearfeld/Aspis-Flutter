@@ -1,6 +1,17 @@
 {
-  "enterPassword": "Enter Password",
-  "@enterPassword": {
+  "@__UNLOCK_PAGE": {},
+  "unlock_page__enterPassword": "Enter Password",
+  "@unlock_page__enterPassword": {
     "description": "Vault unlock screen title - enter password"
-  }
+  },
+
+  "unlock_page__password": "Password",
+
+  "unlock_page__unlock": "Unlock",
+
+  "@__HOME_PAGE": {},
+
+  "@__SETTINGS_PAGE": {},
+
+  "@__ABOUT_PAGE": {}
 }
